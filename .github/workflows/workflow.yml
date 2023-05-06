@@ -1,0 +1,31 @@
+name: Deploy
+concurrency:
+  group: tastytrade-sdk-python
+  cancel-in-progress: true
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Use Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.10'
+      - name: Setup pipenv
+        run: |
+          pip install pipenv --upgrade
+          pipenv install -d
+      - name: Build
+        run: make build
+      - name: Upload
+        run: |
+          PYPI_USERNAME="${{ secrets.PYPI_USERNAME }}" \
+          PYPI_PASSWORD="${{ secrets.PYPI_PASSWORD }}" \
+          make upload
