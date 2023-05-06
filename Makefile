@@ -5,4 +5,4 @@ build: clean
 	pipenv run python -m build
 
 upload:
-	pipenv run python -m twine upload -u ${PYPI_USERNAME} -p ${PYPI_PASSWORD} dist/*
+	pipenv run python -m twine upload dist/* -u ${PYPI_USERNAME} -p ${PYPI_PASSWORD} --skip-existing
