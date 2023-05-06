@@ -1,5 +1,3 @@
-__all__ = []
-
 from injector import Injector
 
 from tastytrade_sdk.api import Api
@@ -16,3 +14,6 @@ class Tastytrade:
     @property
     def watchlists(self) -> Watchlists:
         return self.__injector.get(Watchlists)
+
+
+__all__ = ['Tastytrade']
