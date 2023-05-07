@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Iterator
+from typing import Iterator, List
 
 from injector import inject
 
@@ -9,6 +9,12 @@ from tastytrade_sdk.api import Api
 @dataclass
 class Equity:
     symbol: str
+
+
+@dataclass
+class CompactOptionChain:
+    expiration_type: str
+    symbols: List[str]
 
 
 class Instruments:
@@ -27,6 +33,18 @@ class Instruments:
                 return
             page_offset += 1
             result = self.__get_page(path, page_offset)
+
+    def get_compact_option_chains(self, symbol) -> List[CompactOptionChain]:
+        response = self.__api.get(f'/option-chains/{symbol}/compact')
+        if not response:
+            return []
+        return [
+            CompactOptionChain(
+                expiration_type=x['expiration-type'],
+                symbols=x['symbols']
+            )
+            for x in response['data']['items']
+        ]
 
     def __get_page(self, path: str, page_offset: int) -> dict:
         return self.__api.get(path, [('page-offset', page_offset)])

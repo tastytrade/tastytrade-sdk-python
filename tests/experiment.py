@@ -12,5 +12,5 @@ class Experiment(TestCase):
     def test_experiment(self):
         tastytrade = Tastytrade()
         tastytrade.login(environ.get('TASTYTRADE_LOGIN'), environ.get('TASTYTRADE_PASSWORD'))
-        for market_metric in tastytrade.market_metrics.get_market_metrics(symbols=['SPY', 'QQQ', 'AAPL']):
-            print(market_metric)
+        for option_chain in tastytrade.instruments.get_compact_option_chains('AAPL'):
+            print(option_chain)
