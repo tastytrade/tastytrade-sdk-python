@@ -23,7 +23,7 @@ jobs:
       - run: poetry install
       - name: Upload
         run: |
-          DEV_TAG="${GITHUB_RUN_NUMBER}" make set_dev_version_tag
-          PYPI_USERNAME="${{ secrets.TEST_PYPI_USERNAME }}" \
-          PYPI_PASSWORD="${{ secrets.TEST_PYPI_PASSWORD }}" \
-          make build_upload
+          poetry version "$(poetry version -s)dev${GITHUB_RUN_NUMBER}"
+          poetry --build -r testpypi \
+            -u ${{ secrets.TEST_PYPI_USERNAME }} \
+            -p ${{ secrets.TEST_PYPI_PASSWORD }} \
