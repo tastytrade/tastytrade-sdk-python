@@ -17,10 +17,6 @@ strenum = "^0.4.10"
 
 [tool.poetry.group.dev.dependencies]
 python-dotenv = "^1.0.0"
-toml = "^0.10.2"
-
-[tool.pytest.ini_options]
-pythonpath = ["src"]
 
 [build-system]
 requires = ["poetry-core"]
