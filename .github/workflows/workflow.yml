@@ -18,10 +18,8 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: '3.10'
-      - name: Setup pipenv
-        run: |
-          pip install pipenv --upgrade
-          pipenv install -d
+      - name: Install Poetry
+        uses: snok/install-poetry@v1
       - name: Upload
         run: |
           DEV_TAG="${GITHUB_RUN_NUMBER}" make set_dev_version_tag
