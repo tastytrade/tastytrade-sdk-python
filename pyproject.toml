@@ -24,4 +24,4 @@ classifiers = [
 ]
 
 [project.urls]
-"Homepage" = "https://github.com/amamparo/tastytrade-sdk"
+"Homepage" = "https://github.com/amamparo/tastytrade-sdk-python"
