@@ -12,6 +12,7 @@ T = TypeVar('T')
 
 class Lendability(StrEnum):
     EASY_TO_BORROW = 'Easy To Borrow'
+    HARD_TO_BORROW = 'Hard To Borrow'
 
 
 @dataclass
@@ -26,6 +27,8 @@ class CompactOptionChain:
 
 
 class Instruments:
+    """Instruments"""
+
     @inject
     def __init__(self, api: Api):
         self.__api = api

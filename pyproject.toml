@@ -18,6 +18,7 @@ requests = "2.29.0"
 [tool.poetry.group.dev.dependencies]
 python-dotenv = "^1.0.0"
 sphinx-rtd-theme = "^1.2.0"
+sphinx-autobuild = "^2021.3.14"
 
 [build-system]
 requires = ["poetry-core"]
