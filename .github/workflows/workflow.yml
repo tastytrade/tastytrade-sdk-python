@@ -26,7 +26,8 @@ jobs:
         run: DEV_TAG="${GITHUB_RUN_NUMBER}" make set_dev_version_tag
       - name: Build
         run: |
-          pipenv requirements > requirements.txt
+          make set_dependencies
+          DEV_TAG="${GITHUB_RUN_NUMBER}" make set_dev_version_tag
           make build
       - name: Upload
         run: |
