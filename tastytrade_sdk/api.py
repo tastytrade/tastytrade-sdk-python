@@ -17,7 +17,6 @@ class Api:
         }).json()['data']['session-token']
 
     def get(self, path: str, params: List[Tuple[str, Any]] = tuple()) -> Optional[dict]:
-        print(self.__url(path, params))
         response = requests.get(
             self.__url(path, params),
             headers={'Authorization': self.__token, 'content-type': 'application/json'}
