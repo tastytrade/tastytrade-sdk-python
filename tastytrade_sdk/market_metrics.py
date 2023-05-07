@@ -12,7 +12,7 @@ class MarketMetric:
     symbol: str
     implied_volatility_percentile: Optional[float]
     implied_volatility_rank: Optional[float]
-    updated_at: datetime
+    updated_at: Optional[datetime]
 
 
 class MarketMetrics:
@@ -29,7 +29,7 @@ class MarketMetrics:
                 symbol=x['symbol'],
                 implied_volatility_percentile=self.__optional_float(x, 'implied-volatility-percentile'),
                 implied_volatility_rank=self.__optional_float(x, 'implied-volatility-index-rank'),
-                updated_at=datetime.strptime(x['updated-at'], '%Y-%m-%dT%H:%M:%S.%f%z')
+                updated_at=datetime.strptime(x['updated-at'], '%Y-%m-%dT%H:%M:%S.%f%z') if 'updated-at' in x else None
             )
             for x in response['data']['items']
         ]
