@@ -10,6 +10,7 @@ injector = "*"
 [dev-packages]
 build = "*"
 twine = "*"
+toml = "*"
 
 [requires]
 python_version = "3.10"

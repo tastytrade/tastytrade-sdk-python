@@ -24,6 +24,8 @@ jobs:
           pipenv install -d
       - name: Build
         run: make build
+      - name: Tag Version
+        run: TAG=$(git rev-parse --short "$GITHUB_SHA") make tag_version
       - name: Upload
         run: |
           PYPI_USERNAME="${{ secrets.PYPI_USERNAME }}" \
