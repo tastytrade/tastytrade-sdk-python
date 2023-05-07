@@ -20,6 +20,7 @@ jobs:
           python-version: '3.10'
       - name: Install Poetry
         uses: snok/install-poetry@v1
+      - run: poetry install
       - name: Upload
         run: |
           DEV_TAG="${GITHUB_RUN_NUMBER}" make set_dev_version_tag
