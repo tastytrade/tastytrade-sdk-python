@@ -25,7 +25,9 @@ jobs:
       - name: Set dev tag
         run: DEV_TAG="${GITHUB_RUN_NUMBER}" make set_dev_version_tag
       - name: Build
-        run: make build
+        run: |
+          pipenv requirements > requirements.txt
+          make build
       - name: Upload
         run: |
           PYPI_USERNAME="${{ secrets.TEST_PYPI_USERNAME }}" \
