@@ -10,6 +10,10 @@ class Api:
     __base_url = 'https://api.tastyworks.com'
     __token: Optional[str] = None
 
+    def __init__(self, login: Optional[str], password: Optional[str]):
+        if login and password:
+            self.login(login, password)
+
     def login(self, login: str, password: str) -> None:
         self.__token = requests.post(f'{self.__base_url}/sessions', data={
             'login': login,
@@ -19,7 +23,7 @@ class Api:
     def get(self, path: str, params: List[Tuple[str, Any]] = tuple()) -> Optional[dict]:
         response = requests.get(
             self.__url(path, params),
-            headers={'Authorization': self.__token, 'content-type': 'application/json'}
+            headers=self.__headers()
         )
         if response.status_code == 404:
             return None
@@ -29,7 +33,7 @@ class Api:
         return requests.put(
             f'{self.__base_url}{path}',
             data=json.dumps(payload),
-            headers={'Authorization': self.__token, 'content-type': 'application/json'}
+            headers=self.__headers()
         ).json()
 
     def __url(self, path: str, params: List[Tuple[str, Any]] = tuple()) -> str:
@@ -37,3 +41,6 @@ class Api:
         if params:
             url += '?' + '&'.join(f'{p[0]}={p[1]}' for p in params)
         return url
+
+    def __headers(self) -> dict:
+        return {'Authorization': self.__token, 'content-type': 'application/json'}
