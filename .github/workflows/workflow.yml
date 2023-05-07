@@ -22,7 +22,7 @@ jobs:
         run: |
           pip install pipenv --upgrade
           pipenv install -d
-      - name: Set alpha version tag
+      - name: Set dev tag
         run: DEV_TAG="${GITHUB_RUN_NUMBER}" make set_dev_version_tag
       - name: Build
         run: make build
