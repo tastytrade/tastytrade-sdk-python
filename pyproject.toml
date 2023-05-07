@@ -12,7 +12,7 @@ exclude = ["tests*"]
 name = "tastytrade-sdk"
 version = "0.0.1"
 authors = [
-    { name = "Aaron Mamparo", email = "aaron.mamparo@gmail.com" },
+    { name = "Aaron Mamparo", email = "aaronmamparo@gmail.com" },
 ]
 description = "A python wrapper around the tastytrade open API"
 readme = "README.md"
