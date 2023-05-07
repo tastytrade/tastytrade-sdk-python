@@ -1,0 +1,4 @@
+version: 2
+
+build:
+  os: ubuntu-22.04 # https://github.com/readthedocs/readthedocs.org/issues/10290#issuecomment-1535120995

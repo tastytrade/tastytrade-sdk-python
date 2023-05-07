@@ -12,8 +12,8 @@ packages = [
 [tool.poetry.dependencies]
 python = "^3.8"
 injector = "^0.20.1"
-requests = "^2.30.0"
 strenum = "^0.4.10"
+requests = "2.29.0"
 
 [tool.poetry.group.dev.dependencies]
 python-dotenv = "^1.0.0"
