@@ -26,6 +26,6 @@ jobs:
         run: make build
       - name: Upload
         run: |
-          PYPI_USERNAME="${{ secrets.PYPI_USERNAME }}" \
-          PYPI_PASSWORD="${{ secrets.PYPI_PASSWORD }}" \
-          make upload
+          TEST_PYPI_USERNAME="${{ secrets.TEST_PYPI_USERNAME }}" \
+          TEST_PYPI_PASSWORD="${{ secrets.TEST_PYPI_PASSWORD }}" \
+          make upload_test
