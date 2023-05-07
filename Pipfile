@@ -11,6 +11,8 @@ injector = "*"
 build = "*"
 twine = "*"
 toml = "*"
+setuptools = "*"
+python-dotenv = "*"
 
 [requires]
 python_version = "3.10"

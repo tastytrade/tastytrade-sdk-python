@@ -1,10 +1,11 @@
 import json
-from types import MappingProxyType
-from typing import Optional, Any, Dict
+from typing import Optional, Tuple, List, Any
 
 import requests
+from injector import singleton
 
 
+@singleton
 class Api:
     __base_url = 'https://api.tastyworks.com'
     __token: Optional[str] = None
@@ -15,10 +16,9 @@ class Api:
             'password': password
         }).json()['data']['session-token']
 
-    def get(self, path: str, params: Optional[Dict[str, Any]] = MappingProxyType({})) -> Optional[dict]:
+    def get(self, path: str, params: List[Tuple[str, Any]] = tuple()) -> Optional[dict]:
         response = requests.get(
-            f'{self.__base_url}{path}',
-            params=params,
+            self.__url(path, params),
             headers={'Authorization': self.__token, 'content-type': 'application/json'}
         )
         if response.status_code == 404:
@@ -31,3 +31,9 @@ class Api:
             data=json.dumps(payload),
             headers={'Authorization': self.__token, 'content-type': 'application/json'}
         ).json()
+
+    def __url(self, path: str, params: List[Tuple[str, Any]] = tuple()) -> str:
+        url = f'{self.__base_url}{path}'
+        if params:
+            url += '?' + '&'.join(f'{p[0]}=p{[1]}' for p in params)
+        return url

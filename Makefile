@@ -1,5 +1,8 @@
+test:
+	pipenv run python -m unittest discover -s 'tests' -p '*.py'
+
 clean:
-	rm -rf dist
+	rm -rf dist *.egg-info
 
 build: clean
 	pipenv run python -m build
