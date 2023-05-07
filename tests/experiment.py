@@ -3,7 +3,7 @@ from unittest import TestCase
 
 from dotenv import load_dotenv
 
-from tastytrade_sdk import Tastytrade
+from src.tastytrade_sdk import Tastytrade
 
 load_dotenv()
 

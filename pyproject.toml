@@ -1,27 +1,26 @@
-[build-system]
-requires = ["setuptools>=67.7", "wheel"]
-
-[tool.setuptools]
-include-package-data = false
-
-[tool.setuptools.packages.find]
-include = ["tastytrade_sdk*"]
-exclude = ["tests*"]
-
-[project]
+[tool.poetry]
 name = "tastytrade-sdk"
 version = "0.0.1"
-authors = [
-    { name = "Aaron Mamparo", email = "aaronmamparo@gmail.com" },
-]
-description = "A python wrapper around the tastytrade open API"
+description = ""
+authors = ["Aaron Mamparo <aaronmamparo@gmail.com>"]
+license = "MIT"
 readme = "README.md"
-requires-python = ">=3.7"
-classifiers = [
-    "Programming Language :: Python :: 3",
-    "License :: OSI Approved :: MIT License",
-    "Operating System :: OS Independent",
+packages = [
+    { include = "tastytrade_sdk", from = "src" }
 ]
 
-[project.urls]
-"Homepage" = "https://github.com/amamparo/tastytrade-sdk-python"
+[tool.poetry.dependencies]
+python = "^3.8"
+injector = "^0.20.1"
+requests = "2.29.0"
+
+[tool.poetry.group.dev.dependencies]
+python-dotenv = "^1.0.0"
+toml = "^0.10.2"
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
