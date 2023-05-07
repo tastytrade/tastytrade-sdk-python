@@ -10,10 +10,6 @@ class Api:
     __base_url = 'https://api.tastyworks.com'
     __token: Optional[str] = None
 
-    def __init__(self, login: Optional[str], password: Optional[str]):
-        if login and password:
-            self.login(login, password)
-
     def login(self, login: str, password: str) -> None:
         self.__token = requests.post(f'{self.__base_url}/sessions', data={
             'login': login,

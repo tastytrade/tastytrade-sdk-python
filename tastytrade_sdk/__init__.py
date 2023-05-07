@@ -1,3 +1,5 @@
+from typing import Optional
+
 from injector import Injector
 
 from tastytrade_sdk.api import Api
@@ -7,8 +9,10 @@ from tastytrade_sdk.watchlists import Watchlists
 
 
 class Tastytrade:
-    def __init__(self):
+    def __init__(self, login: Optional[str], password: Optional[str]):
         self.__injector = Injector()
+        if login and password:
+            self.login(login, password)
 
     def login(self, login: str, password: str):
         self.__injector.get(Api).login(login, password)
