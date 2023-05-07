@@ -5,6 +5,7 @@ from injector import Injector
 from tastytrade_sdk.api import Api
 from tastytrade_sdk.instruments import Instruments
 from tastytrade_sdk.market_metrics import MarketMetrics
+from tastytrade_sdk.watchlists import Watchlists
 
 
 class Tastytrade:
