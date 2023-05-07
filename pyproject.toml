@@ -17,6 +17,7 @@ strenum = "^0.4.10"
 
 [tool.poetry.group.dev.dependencies]
 python-dotenv = "^1.0.0"
+sphinx-rtd-theme = "^1.2.0"
 
 [build-system]
 requires = ["poetry-core"]
