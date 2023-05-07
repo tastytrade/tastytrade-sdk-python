@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "tastytrade-sdk"
-version = "0.0.1"
+version = "0.0.2a0"
 description = ""
 authors = ["Aaron Mamparo <aaronmamparo@gmail.com>"]
 license = "MIT"
