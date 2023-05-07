@@ -4,8 +4,8 @@ clean:
 build: clean
 	pipenv run python -m build
 
-tag_version:
-	pipenv run python tag_version.py "${TAG}"
+set_alpha_version_tag:
+	pipenv run python set_alpha_version_tag.py ${ALPHA_TAG}
 
 upload:
 	pipenv run python -m twine upload dist/* -u ${PYPI_USERNAME} -p ${PYPI_PASSWORD}

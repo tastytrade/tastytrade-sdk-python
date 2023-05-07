@@ -22,8 +22,8 @@ jobs:
         run: |
           pip install pipenv --upgrade
           pipenv install -d
-      - name: Tag Version
-        run: TAG=$(git rev-parse --short "$GITHUB_SHA") make tag_version
+      - name: Set alpha version tag
+        run: ALPHA_TAG="${GITHUB_RUN_ID}" make set_alpha_version_tag
       - name: Build
         run: make build
       - name: Upload
