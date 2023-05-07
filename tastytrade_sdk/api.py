@@ -17,6 +17,7 @@ class Api:
         }).json()['data']['session-token']
 
     def get(self, path: str, params: List[Tuple[str, Any]] = tuple()) -> Optional[dict]:
+        print(self.__url(path, params))
         response = requests.get(
             self.__url(path, params),
             headers={'Authorization': self.__token, 'content-type': 'application/json'}
@@ -35,5 +36,5 @@ class Api:
     def __url(self, path: str, params: List[Tuple[str, Any]] = tuple()) -> str:
         url = f'{self.__base_url}{path}'
         if params:
-            url += '?' + '&'.join(f'{p[0]}=p{[1]}' for p in params)
+            url += '?' + '&'.join(f'{p[0]}={p[1]}' for p in params)
         return url
