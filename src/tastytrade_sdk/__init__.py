@@ -2,10 +2,9 @@ from typing import Optional
 
 from injector import Injector
 
-from src.tastytrade_sdk.api import Api
-from src.tastytrade_sdk.instruments import Instruments
-from src.tastytrade_sdk.market_metrics import MarketMetrics
-from src.tastytrade_sdk.watchlists import Watchlists
+from tastytrade_sdk.api import Api
+from tastytrade_sdk.instruments import Instruments
+from tastytrade_sdk.market_metrics import MarketMetrics
 
 
 class Tastytrade:

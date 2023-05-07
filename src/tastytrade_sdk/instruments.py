@@ -3,7 +3,7 @@ from typing import Iterator, List
 
 from injector import inject
 
-from src.tastytrade_sdk.api import Api
+from tastytrade_sdk.api import Api
 
 
 @dataclass
