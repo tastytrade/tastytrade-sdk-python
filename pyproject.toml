@@ -9,6 +9,10 @@ packages = [
     { include = "tastytrade_sdk", from = "src" }
 ]
 
+[project.urls]
+documentation = "https://tastytrade-sdk.readthedocs.io"
+repository = "https://github.com/amamparo/tastytrade-sdk-python"
+
 [tool.poetry.dependencies]
 python = "^3.8"
 injector = "^0.20.1"
