@@ -6,4 +6,3 @@ cdk.out
 .DS_Store
 dist
 *.egg-info
-site
