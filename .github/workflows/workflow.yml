@@ -23,6 +23,6 @@ jobs:
       - name: Upload
         run: |
           poetry version "$(poetry version -s)dev${GITHUB_RUN_NUMBER}"
-          poetry publish --build -r pypi \
+          poetry publish --build \
             -u ${{ secrets.PYPI_USERNAME }} \
             -p ${{ secrets.PYPI_PASSWORD }} \
