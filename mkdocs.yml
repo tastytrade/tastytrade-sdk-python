@@ -1,0 +1,19 @@
+site_name: tastytrade-sdk-python
+theme:
+  name: readthedocs
+
+plugins:
+  - mkdocstrings:
+      default_handler: python
+      handlers:
+        python:
+          options:
+            show_source: false
+            members_order: source
+
+nav:
+  - Home: index.md
+  - Getting Started: getting-started.md
+  - API Reference:
+      - Tastytrade: api-reference/tastytrade.md
+      - Instruments: api-reference/instruments.md

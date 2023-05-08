@@ -1,6 +1,6 @@
 name: Deploy
 concurrency:
-  group: tastytrade-sdk-python
+  group: API Reference-sdk-python
   cancel-in-progress: true
 on:
   workflow_dispatch:
@@ -27,3 +27,7 @@ jobs:
           poetry publish --build -r testpypi \
             -u ${{ secrets.TEST_PYPI_USERNAME }} \
             -p ${{ secrets.TEST_PYPI_PASSWORD }} \
+      - name: Deploy docs
+        uses: mhausenblas/mkdocs-deploy-gh-pages@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
