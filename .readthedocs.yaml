@@ -4,3 +4,12 @@ build:
   os: ubuntu-22.04 # https://github.com/readthedocs/readthedocs.org/issues/10290#issuecomment-1535120995
   tools:
     python: '3.10'
+  jobs:
+    post_create_environment:
+      - pip install poetry
+      - poetry config virtualenvs.create false
+    post_install:
+      - poetry install
+
+sphinx:
+  configuration: docs/conf.py
