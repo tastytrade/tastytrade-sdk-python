@@ -1,6 +1,8 @@
 tastytrade-sdk
 ==========================================
 
+A python wrapper around the `tastytrade open API <https://developer.tastytrade.com>`_
+
 Getting Started
 ***************
 
