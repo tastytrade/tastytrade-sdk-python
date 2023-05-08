@@ -1,6 +1,6 @@
-![Read the Docs (version)](https://img.shields.io/readthedocs/tastytrade-sdk/latest?style=for-the-badge)
-![PyPI - Downloads](https://img.shields.io/pypi/dm/tastytrade-sdk?style=for-the-badge)
-![PyPI - License](https://img.shields.io/pypi/l/tastytrade-sdk?style=for-the-badge)
+[![Read the Docs (version)](https://img.shields.io/readthedocs/tastytrade-sdk/latest)](https://tastytrade-sdk.readthedocs.io/)
+[![PyPI - Downloads](https://img.shields.io/pypi/dm/tastytrade-sdk)](https://pypi.org/project/tastytrade-sdk/)
+![PyPI - License](https://img.shields.io/pypi/l/tastytrade-sdk)
 
 # tastytrade-sdk-python
 
