@@ -4,7 +4,7 @@ from unittest import TestCase
 from dotenv import load_dotenv
 
 from src.tastytrade_sdk import Tastytrade
-from tastytrade_sdk.instruments import Lendability
+from tastytrade_sdk.instruments.models import Lendability
 
 load_dotenv()
 

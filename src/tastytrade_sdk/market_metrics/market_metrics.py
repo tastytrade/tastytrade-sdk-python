@@ -1,18 +1,10 @@
-from dataclasses import dataclass
 from datetime import datetime
 from typing import List, Optional
 
 from injector import inject
 
 from tastytrade_sdk.api import Api
-
-
-@dataclass
-class MarketMetric:
-    symbol: str
-    implied_volatility_percentile: Optional[float]
-    implied_volatility_rank: Optional[float]
-    updated_at: Optional[datetime]
+from tastytrade_sdk.market_metrics.models import MarketMetric
 
 
 class MarketMetrics:

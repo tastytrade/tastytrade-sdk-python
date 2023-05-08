@@ -4,5 +4,9 @@ test:
 clean:
 	rm -rf dist *.egg-info
 
-doc_server:
-	cd docs && poetry run make livehtml
+build_and_serve_docs:
+	cd docs && $(MAKE) html
+	poetry run python -m http.server 8000 --directory docs/_build/html
+
+serve_docs:
+	poetry run watchmedo auto-restart -R -d src -d docs --no-restart-on-command-exit make -- build_and_serve_docs

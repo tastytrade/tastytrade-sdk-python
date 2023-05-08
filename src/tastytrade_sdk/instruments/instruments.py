@@ -1,34 +1,15 @@
-from dataclasses import dataclass
 from types import MappingProxyType
 from typing import Iterator, List, Optional, Any, Dict, Callable, TypeVar
 
 from injector import inject
-from strenum import StrEnum
 
 from tastytrade_sdk.api import Api
+from tastytrade_sdk.instruments.models import Lendability, Equity, CompactOptionChain
 
 T = TypeVar('T')
 
 
-class Lendability(StrEnum):
-    EASY_TO_BORROW = 'Easy To Borrow'
-    HARD_TO_BORROW = 'Hard To Borrow'
-
-
-@dataclass
-class Equity:
-    symbol: str
-
-
-@dataclass
-class CompactOptionChain:
-    expiration_type: str
-    symbols: List[str]
-
-
 class Instruments:
-    """Instruments"""
-
     @inject
     def __init__(self, api: Api):
         self.__api = api
@@ -68,8 +49,3 @@ class Instruments:
                 return
             page_offset += 1
             result = __get_page(page_offset)
-
-
-@dataclass
-class Equity:
-    symbol: str

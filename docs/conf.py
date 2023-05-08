@@ -1,6 +1,5 @@
 from os.path import abspath, join
 from sys import path
-
 path.insert(0, abspath(join('..', 'src')))
 
 project = 'tastytrade-sdk'

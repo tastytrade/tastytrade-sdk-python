@@ -6,20 +6,13 @@ from tastytrade_sdk.api import Api
 
 
 class Watchlists:
-    """
-    Watchlists
-    """
     @inject
     def __init__(self, api: Api):
         self.__api = api
 
     def update(self, name: str, symbols: List[str] = tuple()) -> None:
         """
-        Update a watchlist
-
-        :param name:
-        :param symbols:
-        :return:
+        Create/update a watchlist
         """
         self.__api.put(f'/watchlists/{name}', {
             'name': name,

@@ -1,0 +1,3 @@
+Tastytrade
+==========================================
+.. automodule:: tastytrade_sdk
