@@ -23,7 +23,6 @@ jobs:
       - name: Upload
         run: |
           poetry version "$(poetry version -s)dev${GITHUB_RUN_NUMBER}"
-#          poetry config repositories.testpypi https://test.pypi.org/legacy/
           poetry publish --build -r pypi \
             -u ${{ secrets.PYPI_USERNAME }} \
             -p ${{ secrets.PYPI_PASSWORD }} \
