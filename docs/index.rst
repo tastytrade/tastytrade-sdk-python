@@ -24,7 +24,7 @@ Use It
     tastytrade = Tastytrade()
 
     tastytrade.login(
-        username='jane.doe@email..com',
+        username='jane.doe@email.com',
         password='password'
     )
 
