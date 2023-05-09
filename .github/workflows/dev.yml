@@ -6,7 +6,8 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - master
+      - '*'
+      - '!master'
 jobs:
   deploy:
     name: Deploy
@@ -17,12 +18,12 @@ jobs:
       - name: Use Python
         uses: actions/setup-python@v2
         with:
-          python-version: '3.10'
+          python-version: '3.11'
       - name: Install Poetry
         uses: snok/install-poetry@v1
-      - name: Upload
+      - name: Publish dev
         run: |
           poetry version "$(poetry version -s)dev${GITHUB_RUN_NUMBER}"
           poetry publish --build \
             -u ${{ secrets.PYPI_USERNAME }} \
-            -p ${{ secrets.PYPI_PASSWORD }} \
+            -p ${{ secrets.PYPI_PASSWORD }}

@@ -1,0 +1,28 @@
+name: Release
+concurrency:
+  group: tastytrade-sdk-python-release
+  cancel-in-progress: true
+on:
+  workflow_dispatch:
+    branches:
+      - master
+jobs:
+  deploy:
+    name: Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Use Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.11'
+      - uses: snok/install-poetry@v1
+      - name: Do release
+      - run: |
+          poetry version patch
+          export NEW_VERSION="$(poetry version --short)"
+          git add pyproject.toml
+          git commit -m "Release ${NEW_VERSION}"
+          git tag ${NEW_VERSION}
+          git push ${NEW_VERSION}
