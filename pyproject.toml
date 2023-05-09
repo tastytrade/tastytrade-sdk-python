@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "tastytrade-sdk"
-version = "0.0.16"
+version = "0.0.17a0"
 description = "A python wrapper around the tastytrade open API"
 authors = ["Aaron Mamparo <aaronmamparo@gmail.com>"]
 license = "MIT"
