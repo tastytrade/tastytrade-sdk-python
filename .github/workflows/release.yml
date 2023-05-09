@@ -16,6 +16,7 @@ jobs:
         with:
           python-version: '3.11'
       - uses: snok/install-poetry@v1
+      - run: poetry install
       - run: make test
       - name: Publish
         run: |
