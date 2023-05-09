@@ -4,3 +4,6 @@ test:
 dox:
 	cd docs && poetry run $(MAKE) html
 	poetry run python -m http.server 8000 --directory docs/_build/html
+
+release:
+	./release.sh
