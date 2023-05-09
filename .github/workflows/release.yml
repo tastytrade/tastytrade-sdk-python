@@ -11,10 +11,8 @@ jobs:
     name: Release
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      - name: Use Python
-        uses: actions/setup-python@v2
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
         with:
           python-version: '3.11'
       - uses: snok/install-poetry@v1
