@@ -18,6 +18,6 @@ fi
 export NEW_VERSION="$(poetry version patch --short)"
 git add pyproject.toml
 git commit -m "Release ${NEW_VERSION}"
-git tag ${NEW_VERSION}
-git tag latest
+git tag -f ${NEW_VERSION}
+git tag -f latest
 git push origin ${NEW_VERSION} latest
