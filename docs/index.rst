@@ -30,14 +30,11 @@ Use It
 
     tastytrade.instruments.get_active_equities()
 
-
-
-
 .. toctree::
     :hidden:
     :caption: API Reference
 
-    tastytrade
-    instruments
-    market-metrics
-    watchlists
+    api/tastytrade
+    api/instruments
+    api/market-metrics
+    api/watchlists
