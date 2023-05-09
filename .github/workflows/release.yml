@@ -3,9 +3,9 @@ concurrency:
   group: tastytrade-sdk-python-release
   cancel-in-progress: true
 on:
-  workflow_dispatch:
-    branches:
-      - master
+  push:
+    tags:
+      - '*.*.*'
 jobs:
   release:
     name: Release
@@ -18,11 +18,12 @@ jobs:
         with:
           python-version: '3.11'
       - uses: snok/install-poetry@v1
-      - name: Do release
+      - name: Publish
         run: |
-          poetry version patch
-          export NEW_VERSION="$(poetry version --short)"
-          git add pyproject.toml
-          git commit -m "Release ${NEW_VERSION}"
-          git tag ${NEW_VERSION}
-          git push ${NEW_VERSION}
+          echo "${{github.ref_name}}"
+#          poetry version patch
+#          export NEW_VERSION="$(poetry version --short)"
+#          git add pyproject.toml
+#          git commit -m "Release ${NEW_VERSION}"
+#          git tag ${NEW_VERSION}
+#          git push ${NEW_VERSION}
