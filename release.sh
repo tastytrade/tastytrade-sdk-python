@@ -5,10 +5,10 @@ if [[ "$(git rev-parse --abbrev-ref HEAD)" != "master" ]]; then
   exit 1;
 fi
 
-#if [[ -n $(git status -s) ]]; then
-#  echo "There are uncommitted changes. Exiting."
-#  exit 1;
-#fi
+if [[ -n $(git status -s) ]]; then
+  echo "There are uncommitted changes. Exiting."
+  exit 1;
+fi
 
 if [[ $(git rev-parse HEAD) != $(git rev-parse master@{upstream}) ]]; then
   echo 'Local master is not in sync with remote. Exiting.';
@@ -18,5 +18,6 @@ fi
 export NEW_VERSION="$(poetry version patch --short)"
 git add pyproject.toml
 git commit -m "Release ${NEW_VERSION}"
-#git tag ${NEW_VERSION}
-#git push ${NEW_VERSION}
+git tag ${NEW_VERSION}
+git tag latest
+git push origin ${NEW_VERSION} latest
