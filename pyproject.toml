@@ -9,9 +9,6 @@ packages = [
     { include = "tastytrade_sdk", from = "src" }
 ]
 
-[project]
-name = "tastytrade-sdk"
-
 [project.urls]
 documentation = "https://tastytrade-sdk.readthedocs.io"
 repository = "https://github.com/amamparo/tastytrade-sdk-python"
