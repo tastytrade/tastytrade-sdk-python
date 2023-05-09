@@ -18,8 +18,10 @@ fi
 export NEW_VERSION="$(poetry version patch --short)"
 git add pyproject.toml
 git commit -m "Release ${NEW_VERSION}"
-git push
 git tag ${NEW_VERSION}
 git push origin ${NEW_VERSION}
-git tag -f latest
-git push origin -f latest
+
+export NEW_PREPATCH_VERSION="$(poetry version prepatch --short)"
+git add pyproject.toml
+git commit -m "Bumping to next pre-patch version ${NEW_PREPATCH_VERSION}"
+git push
