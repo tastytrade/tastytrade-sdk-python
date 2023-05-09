@@ -1,7 +1,4 @@
-name: Deploy
-concurrency:
-  group: tastytrade-sdk-python
-  cancel-in-progress: true
+name: Dev CI
 on:
   workflow_dispatch:
   push:
