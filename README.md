@@ -20,7 +20,7 @@ from tastytrade_sdk import Tastytrade
 tastytrade = Tastytrade()
 
 tastytrade.login(
-    username='jane.doe@email..com',
+    username='jane.doe@email.com',
     password='password'
 )
 
