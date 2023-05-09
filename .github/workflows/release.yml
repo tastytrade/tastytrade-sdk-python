@@ -7,7 +7,7 @@ on:
     branches:
       - master
 jobs:
-  deploy:
+  release:
     name: Release
     runs-on: ubuntu-latest
     steps:
@@ -19,7 +19,7 @@ jobs:
           python-version: '3.11'
       - uses: snok/install-poetry@v1
       - name: Do release
-      - run: |
+        run: |
           poetry version patch
           export NEW_VERSION="$(poetry version --short)"
           git add pyproject.toml
