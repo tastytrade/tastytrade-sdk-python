@@ -20,10 +20,6 @@ jobs:
       - uses: snok/install-poetry@v1
       - name: Publish
         run: |
-          echo "${{github.ref_name}}"
-#          poetry version patch
-#          export NEW_VERSION="$(poetry version --short)"
-#          git add pyproject.toml
-#          git commit -m "Release ${NEW_VERSION}"
-#          git tag ${NEW_VERSION}
-#          git push ${NEW_VERSION}
+          poetry publish --build \
+            -u ${{ secrets.PYPI_USERNAME }} \
+            -p ${{ secrets.PYPI_PASSWORD }}
