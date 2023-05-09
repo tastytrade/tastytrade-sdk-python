@@ -5,5 +5,5 @@ clean:
 	rm -rf dist *.egg-info
 
 dox:
-	cd docs && $(MAKE) html
+	cd docs && poetry run $(MAKE) html
 	poetry run python -m http.server 8000 --directory docs/_build/html

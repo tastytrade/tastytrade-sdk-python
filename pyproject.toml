@@ -9,6 +9,9 @@ packages = [
     { include = "tastytrade_sdk", from = "src" }
 ]
 
+[project]
+name = "tastytrade-sdk"
+
 [project.urls]
 documentation = "https://tastytrade-sdk.readthedocs.io"
 repository = "https://github.com/amamparo/tastytrade-sdk-python"
@@ -22,8 +25,7 @@ requests = "2.29.0"
 [tool.poetry.group.dev.dependencies]
 python-dotenv = "^1.0.0"
 sphinx-autobuild = "^2021.3.14"
-sphinx = "6.2.1"
-sphinx-book-theme = "^1.0.1"
+sphinx = "6"
 sphinx-rtd-theme = "^1.2.0"
 
 [build-system]
