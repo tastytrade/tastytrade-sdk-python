@@ -28,6 +28,7 @@ if [[ $(git rev-parse HEAD) != $(git rev-parse master@{upstream}) ]]; then
 fi
 
 export NEW_VERSION="$(poetry version ${RELEASE_TYPE} --short)"
+git checkout -b "release-${NEW_VERSION}"
 git add pyproject.toml
 git commit -m "Release ${NEW_VERSION}"
 git tag ${NEW_VERSION}
@@ -37,3 +38,5 @@ export NEW_PREPATCH_VERSION="$(poetry version prepatch --short)"
 git add pyproject.toml
 git commit -m "Bumping to next pre-patch version ${NEW_PREPATCH_VERSION}"
 git push
+
+gh pr create -t "Release ${NEW_VERSION}" -b ""
