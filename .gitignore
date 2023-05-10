@@ -1,7 +1,6 @@
 **/*.pyc
 .idea
 .env
-cdk.out
 .cache*
 .DS_Store
 dist

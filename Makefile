@@ -1,3 +1,5 @@
+check: checkstyle test
+
 checkstyle:
 	poetry run pylint src tests
 
@@ -13,6 +15,7 @@ watch_docs:
 		-d src -d docs -i 'docs/_build' \
 		--recursive \
 		--no-restart-on-command-exit \
+		-q --timeout 5 \
 		make -- build_serve_docs
 
 release_patch:
