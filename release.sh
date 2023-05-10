@@ -1,14 +1,14 @@
 #!/bin/zsh
 
-die() { echo "$*" 1>&2 ; exit 1; }
-
 read_release_type() {
   export ERROR_MESSAGE="Usage: './release.sh (patch|minor|major)'"
   if [ -z "$1" ]; then
-    die "${ERROR_MESSAGE}"
+    echo "${ERROR_MESSAGE}"
+    exit 1
   fi
   if ! [[ $1 =~ (patch|minor|major) ]] ; then
-    die "${ERROR_MESSAGE}"
+    echo "${ERROR_MESSAGE}"
+    exit 1
   fi
   echo "$1"
 }
@@ -16,15 +16,18 @@ read_release_type() {
 release_type="$(read_release_type $1)"
 
 if [[ "$(git rev-parse --abbrev-ref HEAD)" != "master" ]]; then
-  die 'Release should be run on master. Exiting.'
+  echo 'Release should be run on master. Exiting.'
+  exit 1
 fi
 
 if [[ -n $(git status -s) ]]; then
-  die "There are uncommitted changes. Exiting."
+  echo "There are uncommitted changes. Exiting."
+  exit 1
 fi
 
 if [[ $(git rev-parse HEAD) != $(git rev-parse master@{upstream}) ]]; then
-  die 'Local master is not in sync with remote. Exiting.'
+  echo 'Local master is not in sync with remote. Exiting.'
+  exit 1
 fi
 
 export NEW_VERSION="$(poetry version ${release_type} --short)"
