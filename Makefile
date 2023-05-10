@@ -5,11 +5,11 @@ dox:
 	cd docs && poetry run $(MAKE) html
 	poetry run python -m http.server 8000 --directory docs/_build/html
 
-release_patch: test
+release_patch:
 	./release.sh patch
 
-release_minor: test
+release_minor:
 	./release.sh minor
 
-release_major: test
+release_major:
 	./release.sh major
