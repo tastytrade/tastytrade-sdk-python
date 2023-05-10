@@ -1,19 +1,16 @@
 #!/bin/zsh
 
-read_release_type() {
-  export ERROR_MESSAGE="Usage: './release.sh (patch|minor|major)'"
-  if [ -z "$1" ]; then
-    echo "${ERROR_MESSAGE}"
-    exit 1
-  fi
-  if ! [[ $1 =~ (patch|minor|major) ]] ; then
-    echo "${ERROR_MESSAGE}"
-    exit 1
-  fi
-  echo "$1"
-}
+export RELEASE_TYPE="$1"
 
-release_type="$(read_release_type $1)"
+export ERROR_MESSAGE="Usage: './release.sh (patch|minor|major)'"
+if [ -z "${RELEASE_TYPE}" ]; then
+  echo "${ERROR_MESSAGE}"
+  exit 1
+fi
+if ! [[ "${RELEASE_TYPE}" =~ (patch|minor|major) ]]; then
+  echo "${ERROR_MESSAGE}"
+  exit 1
+fi
 
 if [[ "$(git rev-parse --abbrev-ref HEAD)" != "master" ]]; then
   echo 'Release should be run on master. Exiting.'
@@ -30,7 +27,7 @@ if [[ $(git rev-parse HEAD) != $(git rev-parse master@{upstream}) ]]; then
   exit 1
 fi
 
-export NEW_VERSION="$(poetry version ${release_type} --short)"
+export NEW_VERSION="$(poetry version ${RELEASE_TYPE} --short)"
 git add pyproject.toml
 git commit -m "Release ${NEW_VERSION}"
 git tag ${NEW_VERSION}
