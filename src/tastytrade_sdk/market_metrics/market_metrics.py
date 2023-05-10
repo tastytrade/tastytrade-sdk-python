@@ -27,6 +27,6 @@ class MarketMetrics:
         ]
 
     @staticmethod
-    def __optional_float(x: dict, key: str) -> Optional[float]:
-        value = x.get(key)
+    def __optional_float(_x: dict, key: str) -> Optional[float]:
+        value = _x.get(key)
         return None if value is None else float(value)

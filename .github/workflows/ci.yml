@@ -1,4 +1,4 @@
-name: Dev CI
+name: CI
 on:
   workflow_dispatch:
   push:
@@ -7,7 +7,7 @@ on:
       - '!master'
 jobs:
   deploy:
-    name: Deploy
+    name: Check & Deploy Snapshot
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -16,10 +16,11 @@ jobs:
           python-version: '3.11'
       - uses: snok/install-poetry@v1
       - run: poetry install
+      - run: make checkstyle
       - run: make test
-      - name: Publish dev
+      - name: Publish snapshot
         run: |
-          poetry version "$(poetry version -s)dev${GITHUB_RUN_NUMBER}"
+          poetry version "$(poetry version -s)dev${GITHUB_RUN_ID}"
           poetry publish --build \
             -u ${{ secrets.PYPI_USERNAME }} \
             -p ${{ secrets.PYPI_PASSWORD }}

@@ -35,10 +35,8 @@ class Instruments:
     def __get_paginated(self, path: str, item_handler: Callable[[dict], T],
                         params: Dict[str, Any] = MappingProxyType({})) -> Iterator[T]:
 
-        params_as_tuples = [(k, v) for k, v in params.items()]
-
         def __get_page(_page_offset: int) -> dict:
-            return self.__api.get(path, params_as_tuples + [('page-offset', page_offset)])
+            return self.__api.get(path, list(params.items()) + [('page-offset', page_offset)])
 
         page_offset = 0
         result = __get_page(page_offset)

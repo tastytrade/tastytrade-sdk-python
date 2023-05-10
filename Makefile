@@ -1,3 +1,6 @@
+checkstyle:
+	poetry run pylint src tests
+
 test:
 	poetry run python -m unittest discover -s 'tests' -p '*.py'
 

@@ -1,0 +1,13 @@
+[MAIN]
+fail-under=10.0
+disable=
+    missing-docstring,
+    too-few-public-methods,
+load-plugins=
+    pylint_quotes,
+
+[FORMAT]
+max-line-length=120
+string-quote=single
+triple-quote=double
+docstring-quote=double
