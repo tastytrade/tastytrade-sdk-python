@@ -8,7 +8,8 @@ build:
     post_create_environment:
       - pip install poetry
     post_install:
-      - poetry install
+      - poetry export > requirements.txt
+      - pip install -r requirements.txt
 
 sphinx:
   configuration: docs/conf.py
