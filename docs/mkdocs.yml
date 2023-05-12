@@ -20,6 +20,7 @@ plugins:
     handlers:
       python:
         options:
+            heading_level: 3
             members_order: source
             show_if_no_docstring: true
             show_source: false
@@ -29,5 +30,10 @@ plugins:
             show_root_members_full_path: false
             show_object_full_path: false
             show_category_heading: false
+            show_bases: false
+            allow_inspection: true
             group_by_category: false
+            show_signature_annotations: true
+            separate_signature: true
+            signature_crossrefs: true
             filters: ["!^_"]

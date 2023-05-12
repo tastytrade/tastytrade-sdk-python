@@ -10,6 +10,9 @@ test:
 docs:
 	poetry run mkdocs serve -f docs/mkdocs.yml
 
+check_docs:
+	poetry run mkdocs build -s -f docs/mkdocs.yml
+
 release_patch:
 	./release.sh patch
 

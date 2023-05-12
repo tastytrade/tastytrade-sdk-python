@@ -19,6 +19,7 @@ jobs:
       - run: poetry install
       - run: make lint
       - run: make test
+      - run: make check_docs
       - name: Publish
         run: |
           poetry publish --build \
