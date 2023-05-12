@@ -1,0 +1,33 @@
+site_name: tastytrade-sdk-python
+
+docs_dir: markdown
+
+theme:
+    name: readthedocs
+
+nav:
+    - index.md
+    - tastytrade.md
+    - instruments.md
+    - market_metrics.md
+    - watchlists.md
+
+watch:
+    - ../src
+
+plugins:
+- mkdocstrings:
+    handlers:
+      python:
+        options:
+            members_order: source
+            show_if_no_docstring: true
+            show_source: false
+            show_root_heading: false
+            show_root_toc_entry: false
+            show_root_full_path: false
+            show_root_members_full_path: false
+            show_object_full_path: false
+            show_category_heading: false
+            group_by_category: false
+            filters: ["!^_"]

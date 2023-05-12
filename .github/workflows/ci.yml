@@ -16,11 +16,5 @@ jobs:
           python-version: '3.11'
       - uses: snok/install-poetry@v1
       - run: poetry install
-      - run: make checkstyle
+      - run: make lint
       - run: make test
-      - name: Publish snapshot
-        run: |
-          poetry version "$(poetry version -s)dev${GITHUB_RUN_ID}"
-          poetry publish --build \
-            -u ${{ secrets.PYPI_USERNAME }} \
-            -p ${{ secrets.PYPI_PASSWORD }}

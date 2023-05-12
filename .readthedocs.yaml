@@ -4,12 +4,7 @@ build:
   os: ubuntu-22.04 # https://github.com/readthedocs/readthedocs.org/issues/10290#issuecomment-1535120995
   tools:
     python: '3.11'
-  jobs:
-    post_create_environment:
-      - pip install poetry
-    post_install:
-      - poetry export > requirements.txt
-      - pip install -r requirements.txt
-
-sphinx:
-  configuration: docs/conf.py
+  commands:
+    - pip install poetry
+    - poetry install
+    - poetry run mkdocs build -f docs/mkdocs.yml -s -d $READTHEDOCS_OUTPUT/html

@@ -1,22 +1,14 @@
-check: checkstyle test
+check: lint test
 
-checkstyle:
+lint:
 	poetry run pylint src tests
 
 test:
 	poetry run python -m unittest discover -s 'tests' -p '*.py'
 
-build_serve_docs:
-	cd docs && poetry run $(MAKE) html
-	poetry run python -m http.server 8000 --directory docs/_build/html
-
-watch_docs:
-	poetry run watchmedo auto-restart \
-		-d src -d docs -i 'docs/_build' \
-		--recursive \
-		--no-restart-on-command-exit \
-		-q --timeout 5 \
-		make -- build_serve_docs
+.PHONY: docs
+docs:
+	poetry run mkdocs serve -f docs/mkdocs.yml
 
 release_patch:
 	./release.sh patch

@@ -1,14 +1,9 @@
-name: Release
-concurrency:
-  group: tastytrade-sdk-python-release
-  cancel-in-progress: true
+name: Dev Build
 on:
-  push:
-    tags:
-      - '[0-9]+.[0-9]+.[0-9]+'
+  workflow_dispatch:
 jobs:
-  release:
-    name: Release
+  deploy:
+    name: Dev Build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -17,10 +12,9 @@ jobs:
           python-version: '3.11'
       - uses: snok/install-poetry@v1
       - run: poetry install
-      - run: make lint
-      - run: make test
-      - name: Publish
+      - name: Publish snapshot
         run: |
+          poetry version "$(poetry version -s)dev${GITHUB_RUN_NUMBER}"
           poetry publish --build \
             -u ${{ secrets.PYPI_USERNAME }} \
             -p ${{ secrets.PYPI_PASSWORD }}
