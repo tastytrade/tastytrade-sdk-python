@@ -733,23 +733,6 @@ files = [
 ]
 
 [[package]]
-name = "strenum"
-version = "0.4.10"
-description = "An Enum that inherits from str."
-category = "main"
-optional = false
-python-versions = "*"
-files = [
-    {file = "StrEnum-0.4.10-py3-none-any.whl", hash = "sha256:aebf04bba8e5af435937c452d69a86798b6f8d5ca5f20ba18561dbfad571ccdd"},
-    {file = "StrEnum-0.4.10.tar.gz", hash = "sha256:898cc0ebb5054ee07400341ac1d75fdfee489d76d6df3fbc1c2eaf95971e3916"},
-]
-
-[package.extras]
-docs = ["myst-parser[linkify]", "sphinx", "sphinx-rtd-theme"]
-release = ["twine"]
-test = ["pylint", "pytest", "pytest-black", "pytest-cov", "pytest-pylint"]
-
-[[package]]
 name = "tomli"
 version = "2.0.1"
 description = "A lil' TOML parser"
@@ -946,4 +929,4 @@ testing = ["big-O", "flake8 (<5)", "jaraco.functools", "jaraco.itertools", "more
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8"
-content-hash = "b5ea652891c7f13cc3609e1f03827c2736f6a545d6b98b5eb54b9ffec55dd72b"
+content-hash = "060304d4c66f3667296b1cbb9ee93f081b5a21f8b33f5348b15154e57fb3f81f"

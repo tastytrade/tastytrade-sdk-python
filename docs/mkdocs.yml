@@ -8,6 +8,7 @@ theme:
 nav:
     - index.md
     - tastytrade.md
+    - authentication.md
     - instruments.md
     - market_metrics.md
     - watchlists.md
@@ -36,4 +37,5 @@ plugins:
             show_signature_annotations: true
             separate_signature: true
             signature_crossrefs: true
+            docstring_section_style: list
             filters: ["!^_"]

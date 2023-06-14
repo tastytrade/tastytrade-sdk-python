@@ -18,4 +18,7 @@ jobs:
       - run: poetry install
       - run: make lint
       - run: make test
+        env:
+          TASTYTRADE_LOGIN: ${{ secrets.TASTYTRADE_LOGIN }}
+          TASTYTRADE_PASSWORD: ${{ secrets.TASTYTRADE_PASSWORD }}
       - run: make check_docs

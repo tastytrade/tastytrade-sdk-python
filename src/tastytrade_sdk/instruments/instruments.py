@@ -4,7 +4,7 @@ from typing import Iterator, List, Optional, Any, Dict, Callable, TypeVar
 from injector import inject
 
 from tastytrade_sdk.api import Api
-from tastytrade_sdk.instruments.models import Lendability, Equity, CompactOptionChain
+from tastytrade_sdk.instruments.models import Equity, CompactOptionChain
 
 T = TypeVar('T')
 
@@ -14,10 +14,10 @@ class Instruments:
     def __init__(self, api: Api):
         self.__api = api
 
-    def get_active_equities(self, lendability: Optional[Lendability] = None) -> Iterator[Equity]:
+    def get_active_equities(self, lendability: Optional[str] = None) -> Iterator[Equity]:
         params = {}
         if lendability:
-            params['lendability'] = lendability.value
+            params['lendability'] = lendability
         return self.__get_paginated('/instruments/equities/active', lambda x: Equity(x['symbol']), params)
 
     def get_compact_option_chains(self, symbol) -> List[CompactOptionChain]:
