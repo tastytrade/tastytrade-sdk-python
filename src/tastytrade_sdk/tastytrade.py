@@ -1,16 +1,15 @@
 from injector import Injector
 
-from tastytrade_sdk.api import Api
+from tastytrade_sdk.api import Api, RequestsSession
 from tastytrade_sdk.market_data.market_data import MarketData
 
 
 class Tastytrade:
     def __init__(self):
         self.__container = Injector()
-        self.__api = self.__container.get(Api)
 
     def login(self, login: str, password: str) -> 'Tastytrade':
-        self.api.login(login, password)
+        self.__container.get(RequestsSession).login(login, password)
         return self
 
     def logout(self) -> None:
@@ -22,4 +21,4 @@ class Tastytrade:
 
     @property
     def api(self) -> Api:
-        return self.__api
+        return self.__container.get(Api)
