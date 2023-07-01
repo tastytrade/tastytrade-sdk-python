@@ -8,10 +8,8 @@ theme:
 nav:
     - index.md
     - tastytrade.md
-    - authentication.md
-    - instruments.md
-    - market_metrics.md
-    - watchlists.md
+    - market_data.md
+    - api.md
 
 watch:
     - ../src

@@ -7,27 +7,8 @@
 
 A python wrapper around the [tastytrade open API](https://developer.tastytrade.com/)
 
-## Getting Started
+## Documentation
 
-### Install
-```shell
-pip install tastytrade-sdk
-```
+For users: [Official Documentation](https://tastytrade-sdk.readthedocs.io/)
 
-### Use It
-```python
-from tastytrade_sdk import Tastytrade
-
-tastytrade = Tastytrade()
-
-tastytrade.authentication.login(
-    username='jane.doe@email.com',
-    password='password'
-)
-
-tastytrade.instruments.get_active_equities()
-```
-
-
-## Read the Docs
-https://tastytrade-sdk.readthedocs.io/
+For maintainers: [Developer Guide](./docs/maintainers/README.md)

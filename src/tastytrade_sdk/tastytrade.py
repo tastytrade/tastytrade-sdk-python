@@ -1,27 +1,25 @@
 from injector import Injector
 
-from tastytrade_sdk.authentication import Authentication
-from tastytrade_sdk.instruments.instruments import Instruments
-from tastytrade_sdk.market_metrics.market_metrics import MarketMetrics
-from tastytrade_sdk.watchlists.watchlists import Watchlists
+from tastytrade_sdk.api import Api
+from tastytrade_sdk.market_data.market_data import MarketData
 
 
 class Tastytrade:
     def __init__(self):
-        self.__injector = Injector()
+        self.__container = Injector()
+        self.__api = self.__container.get(Api)
+
+    def login(self, login: str, password: str) -> 'Tastytrade':
+        self.api.login(login, password)
+        return self
+
+    def logout(self) -> None:
+        self.api.delete('/sessions')
 
     @property
-    def authentication(self) -> Authentication:
-        return self.__injector.get(Authentication)
+    def market_data(self) -> MarketData:
+        return self.__container.get(MarketData)
 
     @property
-    def instruments(self) -> Instruments:
-        return self.__injector.get(Instruments)
-
-    @property
-    def market_metrics(self) -> MarketMetrics:
-        return self.__injector.get(MarketMetrics)
-
-    @property
-    def watchlists(self) -> Watchlists:
-        return self.__injector.get(Watchlists)
+    def api(self) -> Api:
+        return self.__api

@@ -3,6 +3,9 @@ fail-under=10.0
 disable=
     missing-docstring,
     too-few-public-methods,
+    too-many-arguments,
+    too-many-instance-attributes,
+    fixme,
 load-plugins=
     pylint_quotes,
 

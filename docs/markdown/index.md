@@ -9,12 +9,14 @@ pip install tastytrade-sdk
 ```python
 from tastytrade_sdk import Tastytrade
 
-tastytrade = Tastytrade()
+tasty = Tastytrade()
 
-tastytrade.authentication.login(
+tasty.login(
     username='jane.doe@email.com',
     password='password'
 )
 
-tastytrade.instruments.get_active_equities()
+tasty.api.post('/sessions/validate')
+
+tasty.logout()
 ```

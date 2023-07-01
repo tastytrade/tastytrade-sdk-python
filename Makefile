@@ -1,4 +1,4 @@
-check: lint test
+check: lint test check_docs
 
 lint:
 	poetry run pylint src tests
