@@ -1,4 +1,12 @@
+[![PyPI](https://img.shields.io/pypi/v/tastytrade-sdk)](https://pypi.org/project/tastytrade-sdk/)
+[![GitHub Discussions](https://img.shields.io/github/discussions/amamparo/tastytrade-sdk-python)](https://github.com/amamparo/tastytrade-sdk-python/discussions)
+[![GitHub issues](https://img.shields.io/github/issues/amamparo/tastytrade-sdk-python)](https://github.com/amamparo/tastytrade-sdk-python/issues)
+
 # Getting Started
+
+Before using this SDK, ensure that you:
+* have a [Tastytrade account](https://start.tastytrade.com/)
+* have opted into the [Tastytrade Open API program](https://developer.tastytrade.com/)
 
 ## Install
 
