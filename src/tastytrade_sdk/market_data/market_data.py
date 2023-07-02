@@ -9,8 +9,13 @@ from tastytrade_sdk.market_data.models import Candle, Quote
 
 
 class MarketData:
+    """
+    Submodule for streaming market data
+    """
+
     @inject
     def __init__(self, api: Api, streamer_symbol_translations_factory: StreamerSymbolTranslationsFactory):
+        """@private"""
         self.__api = api
         self.__streamer_symbol_translations_factory = streamer_symbol_translations_factory
 

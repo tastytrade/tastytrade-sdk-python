@@ -1,4 +1,4 @@
-check: lint test check_docs
+check: lint test
 
 lint:
 	poetry run pylint src tests
@@ -8,10 +8,7 @@ test:
 
 .PHONY: docs
 docs:
-	poetry run mkdocs serve -f docs/mkdocs.yml
-
-check_docs:
-	poetry run mkdocs build -s -f docs/mkdocs.yml
+	poetry run pdoc src/tastytrade_sdk --docformat numpy --no-show-source --no-include-undocumented -t docs/users
 
 release_patch:
 	./release.sh patch

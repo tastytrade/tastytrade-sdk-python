@@ -1,0 +1,48 @@
+{# Overriding blocks in https://github.com/mitmproxy/pdoc/blob/main/pdoc/templates/default/module.html.jinja2 #}
+
+{% extends "default/module.html.jinja2" %}
+
+{% block title %}tastytrade-sdk{% endblock %}
+
+{% defaultmacro module_name() %}
+{% enddefaultmacro %}
+
+{% block nav_index %}
+    {% set index = module.docstring | to_markdown | to_html | attr("toc_html") %}
+    {% if index %}
+        <h2>tastytrade-sdk</h2>
+        {{ index | safe }}
+    {% endif %}
+{% endblock %}
+
+{% block nav_members %}
+    {% if module.members %}
+        <h3>API Reference</h3>
+        {{ nav_members(module.members.values()) }}
+    {% endif %}
+{% endblock %}
+
+{% block module_contents %}
+    <h1>API Reference</h1>
+    {% for m in module.flattened_own_members if is_public(m) | trim %}
+        <section id="{{ m.qualname or m.name }}">
+            {{ member(m) }}
+            {% if m.kind == "class" %}
+                {% for m in m.own_members if m.kind != "class" and is_public(m) | trim %}
+                    <div id="{{ m.qualname }}" class="classattr">
+                        {{ member(m) }}
+                    </div>
+                {% endfor %}
+                {% set inherited_members = inherited(m) | trim %}
+                {% if inherited_members %}
+                    <div class="inherited">
+                        <h5>Inherited Members</h5>
+                        <dl>
+                            {{ inherited_members }}
+                        </dl>
+                    </div>
+                {% endif %}
+            {% endif %}
+        </section>
+    {% endfor %}
+{% endblock %}
