@@ -1,4 +1,4 @@
-# Developer's Guide
+# Developer Guide
 
 ## Requirements
 * Python 3.8+
@@ -34,8 +34,8 @@ Good code is self-documenting.
 However, this project uses a tool that automatically generates documentation from
 docstrings.
 
-As a result, whenever adding a new class or method that the user should know about, make sure to:
-* include new classes in the `__all__` list in [__init__.py](../../tastytrade_sdk/__init__.py), and
+As a result, whenever adding a new class or method that the SDK user should know about, make sure to:
+* include new classes in the `__all__` list in [\_\_init\_\_.py](../../tastytrade_sdk/__init__.py), and
 * include [numpy-formatted docstrings](https://numpydoc.readthedocs.io/en/latest/format.html) in new class and method
   definitions
 
