@@ -9,4 +9,4 @@ A python wrapper around the [tastytrade open API](https://developer.tastytrade.c
 
 For users: [Official Documentation](https://amamparo.github.io/tastytrade-sdk-python)
 
-For contributors: [Developer Guide](./docs/contributers/README.md)
+For contributors: [Developer Guide](./docs/contributors/README.md)
