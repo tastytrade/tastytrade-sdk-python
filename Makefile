@@ -8,7 +8,7 @@ test:
 
 .PHONY: docs
 docs:
-	poetry run pdoc src/tastytrade_sdk --docformat numpy --no-show-source --no-include-undocumented -t docs/users
+	poetry run pdoc src/tastytrade_sdk --docformat numpy --no-show-source -t docs/users
 
 release_patch:
 	./release.sh patch

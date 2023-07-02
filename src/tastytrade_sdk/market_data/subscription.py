@@ -10,7 +10,7 @@ from websockets.exceptions import ConnectionClosedOK
 from websockets.sync.client import connect, ClientConnection
 
 from tastytrade_sdk.exceptions import TastytradeSdkException
-from tastytrade_sdk.market_data.models import Candle, Quote, Bid, Ask
+from tastytrade_sdk.market_data.models import Candle, Quote
 from tastytrade_sdk.market_data.streamer_symbol_translation import StreamerSymbolTranslations
 
 
@@ -47,6 +47,7 @@ class Subscription:
     def __init__(self, url: str, token: str, streamer_symbol_translations: StreamerSymbolTranslations,
                  on_quote: Optional[Callable[[Quote], None]],
                  on_candle: Optional[Callable[[Candle], None]]):
+        """@private"""
         self.__url = url
         self.__token = token
         self.__streamer_symbol_translations = streamer_symbol_translations
@@ -54,6 +55,7 @@ class Subscription:
         self.__on_candle = on_candle
 
     def open(self) -> 'Subscription':
+        """Start listening for feed events"""
         self.__websocket = connect(self.__url)
         self.__receive_thread = LoopThread(self.__receive)
 
@@ -74,7 +76,8 @@ class Subscription:
         self.__send('FEED_SUBSCRIPTION', channel=1, add=subscriptions)
         return self
 
-    def close(self):
+    def close(self) -> None:
+        """Close the stream connection"""
         if self.__keepalive_thread:
             self.__keepalive_thread.stop()
         if self.__receive_thread:
@@ -109,8 +112,12 @@ class Subscription:
         if event_type == 'Quote' and self.__on_quote:
             self.__on_quote(Quote(
                 symbol=original_symbol,
-                bid=Bid(price=event['bidPrice'], size=event['bidSize'], exchange_code=event['bidExchangeCode']),
-                ask=Ask(price=event['askPrice'], size=event['askSize'], exchange_code=event['askExchangeCode'])
+                bid_price=event['bidPrice'],
+                bid_size=event['bidSize'],
+                bid_exchange_code=event['bidExchangeCode'],
+                ask_price=event['askPrice'],
+                ask_size=event['askSize'],
+                ask_exchange_code=event['askExchangeCode']
             ))
         elif event_type == 'Candle' and self.__on_candle:
             self.__on_candle(Candle(

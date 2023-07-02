@@ -8,6 +8,7 @@ from requests import Session, JSONDecodeError
 from tastytrade_sdk.exceptions import TastytradeSdkException
 
 QueryParams = Union[Dict[str, Any], List[Tuple[str, Any]]]
+"""foobar"""
 
 
 @singleton
@@ -53,23 +54,46 @@ class RequestsSession:
 
 @singleton
 class Api:
+    """
+    In case an open API feature isn't supported by this SDK yet, use this submodule to make direct requests to the API.
+
+    The `params` argument can either be a `Dict[str, Any]` or a `List[Tuple[str, Any]]`
+
+    API endpoints that accept multiple symbols in the query string use the `symbol[]=SPY&symbol[]=AAPL&...` convention,
+    in which case, `params` should be passed as a `List[Tuple[str, Any]]`, since duplicate keys are not allowed in
+    dicts. e.g:
+    ```python
+    equities = tasty.api.get(
+        '/instruments/equities',
+        params=[('symbol[]', 'SPY'), ('symbol[]', 'AAPL')]
+    )
+    ```
+    <br/>
+    """
+
     @inject
     def __init__(self, requests_session: RequestsSession):
+        """@private"""
         self.__session = requests_session
 
     def get(self, path: str, params: Optional[QueryParams] = None) -> Optional[dict]:
+        """Make a GET request"""
         return self.__session.request('GET', path, params=params)
 
     def post(self, path: str, params: Optional[QueryParams] = None, data: Optional[dict] = None) -> Optional[dict]:
+        """Make a POST request"""
         return self.__session.request('POST', path, params=params, data=data)
 
     def put(self, path: str, params: Optional[QueryParams] = None, data: Optional[dict] = None) -> Optional[dict]:
+        """Make a PUT request"""
         return self.__session.request('PUT', path, params=params, data=data)
 
     def patch(self, path: str, params: Optional[QueryParams] = None, data: Optional[dict] = None) -> Optional[dict]:
+        """Make a PATCH request"""
         return self.__session.request('PATCH', path, params=params, data=data)
 
     def delete(self, path: str, params: Optional[QueryParams] = None) -> Optional[dict]:
+        """Make a DELETE request"""
         return self.__session.request('DELETE', path, params=params)
 
 

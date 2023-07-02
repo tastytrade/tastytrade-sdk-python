@@ -20,8 +20,7 @@ jobs:
       - run: poetry install
       - name: build docs
         run: |
-          poetry run pdoc src/tastytrade_sdk --docformat numpy --no-show-source --no-include-undocumented \
-            -t docs/users -o docs/
+          poetry run pdoc src/tastytrade_sdk --docformat numpy --no-show-source -t docs/users -o docs/
       - uses: actions/upload-pages-artifact@v1
         with:
           path: docs/

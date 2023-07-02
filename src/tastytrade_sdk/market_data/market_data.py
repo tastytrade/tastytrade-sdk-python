@@ -21,6 +21,12 @@ class MarketData:
 
     def subscribe(self, symbols: List[str], on_quote: Optional[Callable[[Quote], None]] = None,
                   on_candle: Optional[Callable[[Candle], None]] = None) -> Subscription:
+        """
+        Subscribe to live feed data
+        :param symbols: Symbols to subscribe to. Can be across multiple instrument types.
+        :param on_quote: Handler for `Quote` events
+        :param on_candle: Handler for `Candle` events
+        """
         data = self.__api.get('/quote-streamer-tokens')['data']
         return Subscription(
             data['dxlink-url'],
