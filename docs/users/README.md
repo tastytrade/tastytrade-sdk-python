@@ -38,6 +38,7 @@ tasty.logout()
 ## Streaming Market Data
 ```python
 from tastytrade_sdk import Tastytrade
+from tastytrade_sdk.market_data.models import Quote, Candle, Greeks
 
 tasty = Tastytrade().login(login='trader@email.com', password='password')
 
@@ -49,6 +50,10 @@ def on_quote(quote: Quote):
 
 def on_candle(candle: Candle):
     print(candle)
+
+
+def on_greeks(greeks: Greeks):
+    print(greeks)
 
 
 # Subscribing to symbols across different instrument types
@@ -63,7 +68,8 @@ symbols = [
 subscription = tasty.market_data.subscribe(
     symbols=symbols,
     on_quote=on_quote,
-    on_candle=on_candle
+    on_candle=on_candle,
+    on_greeks=on_greeks
 )
 
 # start streaming

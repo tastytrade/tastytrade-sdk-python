@@ -9,8 +9,8 @@ import ujson
 from websockets.exceptions import ConnectionClosedOK
 from websockets.sync.client import connect, ClientConnection
 
-from tastytrade_sdk.exceptions import TastytradeSdkException
-from tastytrade_sdk.market_data.models import Candle, Quote
+from tastytrade_sdk.exceptions import TastytradeSdkException, InvalidArgument
+from tastytrade_sdk.market_data.models import Candle, Quote, Greeks
 from tastytrade_sdk.market_data.streamer_symbol_translation import StreamerSymbolTranslations
 
 
@@ -45,14 +45,20 @@ class Subscription:
     __is_authorized: bool = False
 
     def __init__(self, url: str, token: str, streamer_symbol_translations: StreamerSymbolTranslations,
-                 on_quote: Optional[Callable[[Quote], None]],
-                 on_candle: Optional[Callable[[Candle], None]]):
+                 on_quote: Optional[Callable[[Quote], None]] = None,
+                 on_candle: Optional[Callable[[Candle], None]] = None,
+                 on_greeks: Optional[Callable[[Greeks], None]] = None):
         """@private"""
+
+        if not (on_quote or on_candle or on_greeks):
+            raise InvalidArgument('At least one feed event handler must be provided')
+
         self.__url = url
         self.__token = token
         self.__streamer_symbol_translations = streamer_symbol_translations
         self.__on_quote = on_quote
         self.__on_candle = on_candle
+        self.__on_greeks = on_greeks
 
     def open(self) -> 'Subscription':
         """Start listening for feed events"""
@@ -64,6 +70,8 @@ class Subscription:
             subscription_types.append('Quote')
         if self.__on_candle:
             subscription_types.append('Candle')
+        if self.__on_greeks:
+            subscription_types.append('Greeks')
 
         subscriptions = [{'symbol': s, 'type': t} for s, t in
                          product(self.__streamer_symbol_translations.streamer_symbols, subscription_types)]
@@ -127,6 +135,19 @@ class Subscription:
                 high=event['high'],
                 low=event['low'],
                 close=event['close'],
+                volume=event['volume']
+            ))
+        elif event_type == 'Greeks' and self.__on_greeks:
+            self.__on_greeks(Greeks(
+                symbol=original_symbol,
+                time=event['time'],
+                price=event['price'],
+                volatility=event['volatility'],
+                delta=event['delta'],
+                gamma=event['gamma'],
+                theta=event['theta'],
+                vega=event['vega'],
+                rho=event['rho']
             ))
         else:
             logging.debug('Unhandled feed event type %s for symbol %s', event_type, original_symbol)

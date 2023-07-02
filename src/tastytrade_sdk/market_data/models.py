@@ -44,9 +44,10 @@ class Candle:
     high: Optional[float]
     low: Optional[float]
     close: Optional[float]
+    volume: Optional[float]
 
     def __init__(self, symbol: str, time: int, _open: NullableFloatStr, high: NullableFloatStr, low: NullableFloatStr,
-                 close: NullableFloatStr):
+                 close: NullableFloatStr, volume: NullableFloatStr):
         """@private"""
         self.symbol = symbol
         self.time = time
@@ -54,3 +55,31 @@ class Candle:
         self.high = _float(high)
         self.low = _float(low)
         self.close = _float(close)
+        self.volume = _float(volume)
+
+
+@dataclass
+class Greeks:
+    symbol: str
+    time: int
+    price: Optional[float]
+    volatility: Optional[float]
+    delta: Optional[float]
+    gamma: Optional[float]
+    theta: Optional[float]
+    rho: Optional[float]
+    vega: Optional[float]
+
+    def __init__(self, symbol: str, time: int, price: NullableFloatStr, volatility: NullableFloatStr,
+                 delta: NullableFloatStr, gamma: NullableFloatStr, theta: NullableFloatStr, rho: NullableFloatStr,
+                 vega: NullableFloatStr):
+        """@private"""
+        self.symbol = symbol
+        self.time = time
+        self.price = _float(price)
+        self.volatility = _float(volatility)
+        self.delta = _float(delta)
+        self.gamma = _float(gamma)
+        self.theta = _float(theta)
+        self.rho = _float(rho)
+        self.vega = _float(vega)
