@@ -4,17 +4,20 @@ from typing import Optional, Tuple, List, Any, Union, Dict
 from injector import singleton, inject
 from requests import Session, JSONDecodeError
 
+from tastytrade_sdk.config import Config
 from tastytrade_sdk.exceptions import TastytradeSdkException
 
 QueryParams = Union[Dict[str, Any], List[Tuple[str, Any]]]
-"""foobar"""
 
 
 @singleton
 class RequestsSession:
-    __base_url = 'https://api.tastyworks.com'
     __session = Session()
     __user_agent = 'tastytrade-sdk-python'
+
+    @inject
+    def __init__(self, config: Config):
+        self.__base_url = f'https://{config.api_base_url}'
 
     def login(self, login: str, password: str) -> None:
         self.__session.headers['Authorization'] = self.request(

@@ -1,6 +1,6 @@
 from injector import Injector
 
-from tastytrade_sdk import Config
+from tastytrade_sdk.config import Config
 from tastytrade_sdk.api import Api, RequestsSession
 from tastytrade_sdk.market_data.market_data import MarketData
 
