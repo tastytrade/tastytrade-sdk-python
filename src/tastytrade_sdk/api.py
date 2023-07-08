@@ -1,7 +1,6 @@
 import logging
 from typing import Optional, Tuple, List, Any, Union, Dict
 
-import importlib.metadata
 from injector import singleton, inject
 from requests import Session, JSONDecodeError
 
@@ -15,7 +14,7 @@ QueryParams = Union[Dict[str, Any], List[Tuple[str, Any]]]
 class RequestsSession:
     __base_url = 'https://api.tastyworks.com'
     __session = Session()
-    __user_agent = f'tastytrade-sdk-python v{importlib.metadata.version("tastytrade-sdk")}'
+    __user_agent = 'tastytrade-sdk-python'
 
     def login(self, login: str, password: str) -> None:
         self.__session.headers['Authorization'] = self.request(

@@ -2,7 +2,9 @@
 name = "tastytrade-sdk"
 version = "0.1.1a0"
 description = "A python wrapper around the tastytrade open API"
-authors = ["Aaron Mamparo <aaronmamparo@gmail.com>"]
+authors = [
+    "Aaron Mamparo <aaronmamparo@gmail.com>"
+]
 license = "MIT"
 readme = "README.md"
 packages = [
@@ -10,8 +12,8 @@ packages = [
 ]
 
 [project.urls]
-documentation = "https://tastytrade-sdk.readthedocs.io"
-repository = "https://github.com/amamparo/tastytrade-sdk-python"
+documentation = "https://tastytrade.github.io/tastytrade-sdk-python"
+repository = "https://github.com/tastytrade/tastytrade-sdk-python"
 
 [tool.poetry.dependencies]
 python = "^3.8"

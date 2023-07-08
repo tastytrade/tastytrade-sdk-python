@@ -1,5 +1,6 @@
 from injector import Injector
 
+from tastytrade_sdk import Config
 from tastytrade_sdk.api import Api, RequestsSession
 from tastytrade_sdk.market_data.market_data import MarketData
 
@@ -9,8 +10,16 @@ class Tastytrade:
     The SDK's top-level class
     """
 
-    def __init__(self):
-        self.__container = Injector()
+    def __init__(self, api_base_url: str = 'api.tastytrade.com'):
+        """
+        :param api_base_url: Optionally override the base URL used by the API
+        (when using the sandbox environment, for e.g.)
+        """
+
+        def configure(binder):
+            binder.bind(Config, to=Config(api_base_url=api_base_url))
+
+        self.__container = Injector(configure)
 
     def login(self, login: str, password: str) -> 'Tastytrade':
         """

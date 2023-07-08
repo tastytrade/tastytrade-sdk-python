@@ -1,6 +1,6 @@
 [![PyPI](https://img.shields.io/pypi/v/tastytrade-sdk)](https://pypi.org/project/tastytrade-sdk/)
-[![GitHub Discussions](https://img.shields.io/github/discussions/amamparo/tastytrade-sdk-python)](https://github.com/amamparo/tastytrade-sdk-python/discussions)
-[![GitHub issues](https://img.shields.io/github/issues/amamparo/tastytrade-sdk-python)](https://github.com/amamparo/tastytrade-sdk-python/issues)
+[![GitHub Discussions](https://img.shields.io/github/discussions/tastytrade/tastytrade-sdk-python)](https://github.com/tastytrade/tastytrade-sdk-python/discussions)
+[![GitHub issues](https://img.shields.io/github/issues/tastytrade/tastytrade-sdk-python)](https://github.com/tastytrade/tastytrade-sdk-python/issues)
 
 # Getting Started
 
