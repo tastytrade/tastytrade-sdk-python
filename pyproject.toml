@@ -6,7 +6,7 @@ authors = [
     "Aaron Mamparo <aaronmamparo@gmail.com>"
 ]
 license = "MIT"
-readme = "README.md"
+readme = "docs/users/README.md"
 packages = [
     { include = "tastytrade_sdk", from = "src" }
 ]
