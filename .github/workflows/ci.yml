@@ -19,5 +19,6 @@ jobs:
       - run: make lint
       - run: make test
         env:
+          API_BASE_URL: api.cert.tastyworks.com
           TASTYTRADE_LOGIN: ${{ secrets.TASTYTRADE_LOGIN }}
           TASTYTRADE_PASSWORD: ${{ secrets.TASTYTRADE_PASSWORD }}
