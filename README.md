@@ -7,6 +7,6 @@ A python wrapper around the [tastytrade open API](https://developer.tastytrade.c
 
 ## Documentation
 
-For users: [Official Documentation](https://amamparo.github.io/tastytrade-sdk-python)
+For users: [Official Documentation](https://tastytrade.github.io/tastytrade-sdk-python)
 
 For contributors: [Developer Guide](./docs/contributors/README.md)
