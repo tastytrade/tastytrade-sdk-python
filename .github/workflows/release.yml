@@ -20,6 +20,7 @@ jobs:
       - run: make lint
       - run: make test
         env:
+          API_BASE_URL: ${{ env.API_BASE_URL }}
           TASTYTRADE_LOGIN: ${{ secrets.TASTYTRADE_LOGIN }}
           TASTYTRADE_PASSWORD: ${{ secrets.TASTYTRADE_PASSWORD }}
       - name: Publish
