@@ -30,7 +30,7 @@ class RequestsSession:
                 data: Optional[dict] = None) -> Optional[dict]:
         url = self.__url(path, params)
         logging.debug('%s %s', path, params)
-        response = self.__session.request(method, url, data=data, headers={'User-Agent': self.__user_agent})
+        response = self.__session.request(method, url, json=data, headers={'User-Agent': self.__user_agent})
         is_ok = 200 <= response.status_code <= 399
         if is_ok:
             try:
