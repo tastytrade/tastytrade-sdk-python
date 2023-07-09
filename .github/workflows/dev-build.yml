@@ -12,6 +12,12 @@ jobs:
           python-version: '3.11'
       - uses: snok/install-poetry@v1
       - run: poetry install
+      - run: make lint
+      - run: make test
+        env:
+          API_BASE_URL: ${{ vars.API_BASE_URL }}
+          TASTYTRADE_LOGIN: ${{ secrets.TASTYTRADE_LOGIN }}
+          TASTYTRADE_PASSWORD: ${{ secrets.TASTYTRADE_PASSWORD }}
       - name: Publish snapshot
         run: |
           poetry version "$(poetry version -s)dev${GITHUB_RUN_NUMBER}"
