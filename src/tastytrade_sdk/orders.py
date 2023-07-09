@@ -25,6 +25,7 @@ class Leg:
 
 @dataclass
 class Order:
+    """@private"""
     order_type: str
     time_in_force: str
     legs: List[Leg]
