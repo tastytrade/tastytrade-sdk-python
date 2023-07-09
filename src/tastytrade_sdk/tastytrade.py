@@ -4,7 +4,7 @@ from tastytrade_sdk.account import Account
 from tastytrade_sdk.config import Config
 from tastytrade_sdk.api import Api, RequestsSession
 from tastytrade_sdk.market_data.market_data import MarketData
-from tastytrade_sdk.orders import Orders
+from tastytrade_sdk.orders.orders import Orders
 
 
 class Tastytrade:

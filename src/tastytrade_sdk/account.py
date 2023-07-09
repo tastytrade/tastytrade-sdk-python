@@ -1,8 +1,9 @@
 from dataclasses import dataclass
 from typing import List, Optional, Tuple, Any
 
-from tastytrade_sdk import Api
-from tastytrade_sdk.orders import Orders, Order
+from tastytrade_sdk.api import Api
+from tastytrade_sdk.orders.orders import Orders
+from tastytrade_sdk.orders.models import Order
 
 
 @dataclass

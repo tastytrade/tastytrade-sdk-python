@@ -1,10 +1,6 @@
 from dataclasses import dataclass
 from typing import List
 
-from injector import inject
-
-from tastytrade_sdk import Api
-
 
 @dataclass
 class Leg:
@@ -38,15 +34,3 @@ class Order:
             'time-in-force': self.time_in_force,
             'legs': [leg.json for leg in self.legs]
         }
-
-
-class Orders:
-    @inject
-    def __init__(self, api: Api):
-        self.__api = api
-
-    def place_order(self, account_number: str, order: Order) -> dict:
-        """
-        https://developer.tastytrade.com/open-api-spec/orders/#/orders/postAccountsAccountNumberOrders
-        """
-        return self.__api.post(f'/accounts/{account_number}/orders', data=order.json)
