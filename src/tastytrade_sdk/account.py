@@ -8,6 +8,7 @@ from tastytrade_sdk.orders.models import Order
 
 @dataclass
 class PositionsParams:
+    """@private"""
     underlying_symbols: Optional[List[str]] = None
     symbol: Optional[str] = None
     instrument_type: Optional[str] = None

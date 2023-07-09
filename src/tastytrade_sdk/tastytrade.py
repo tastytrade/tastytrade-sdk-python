@@ -37,6 +37,7 @@ class Tastytrade:
         self.api.delete('/sessions')
 
     def account(self, account_number: str) -> Account:
+        """@private"""
         return Account(account_number, api=self.api, orders=self.__container.get(Orders))
 
     @property

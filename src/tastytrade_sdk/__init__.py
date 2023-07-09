@@ -8,9 +8,11 @@ __all__ = [
     'Tastytrade',
     'MarketData', 'Subscription', 'Quote', 'Candle', 'Greeks',
     'Api',
+    'PositionsParams',
     'Order', 'Leg'
 ]
 
+from tastytrade_sdk.account import PositionsParams
 from tastytrade_sdk.api import Api, QueryParams
 from tastytrade_sdk.market_data.market_data import MarketData
 from tastytrade_sdk.market_data.models import Quote, Candle, Greeks
