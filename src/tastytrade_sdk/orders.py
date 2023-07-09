@@ -8,6 +8,7 @@ from tastytrade_sdk import Api
 
 @dataclass
 class Leg:
+    """@private"""
     instrument_type: str
     symbol: str
     action: str
