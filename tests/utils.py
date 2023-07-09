@@ -2,7 +2,7 @@ from os import environ
 
 from dotenv import load_dotenv
 
-from tastytrade_sdk import Tastytrade
+from tastytrade_sdk.tastytrade import Tastytrade
 
 load_dotenv()
 

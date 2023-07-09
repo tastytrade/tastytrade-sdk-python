@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from tastytrade_sdk import Subscription
+from tastytrade_sdk.market_data.subscription import Subscription
 from tastytrade_sdk.exceptions import InvalidArgument
 from tastytrade_sdk.market_data.streamer_symbol_translation import StreamerSymbolTranslations
 

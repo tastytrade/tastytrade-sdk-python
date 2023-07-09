@@ -1,6 +1,6 @@
 from injector import inject
 
-from tastytrade_sdk import Api
+from tastytrade_sdk.api import Api
 from tastytrade_sdk.orders.models import Order
 
 
