@@ -45,6 +45,11 @@ class RequestsSession:
             raise ServerError()
         raise Unknown()
 
+    @property
+    def token(self) -> str:
+        """@private"""
+        return self.__session.headers['Authorization']
+
     def __url(self, path: str, params: Optional[QueryParams] = None) -> str:
         url = f'{self.__base_url}{path}'
         if params:
@@ -97,6 +102,11 @@ class Api:
     def delete(self, path: str, params: Optional[QueryParams] = None) -> Optional[dict]:
         """Make a DELETE request"""
         return self.__session.request('DELETE', path, params=params)
+
+    @property
+    def token(self) -> str:
+        """@private"""
+        return self.__session.token
 
 
 class Unauthorized(TastytradeSdkException):

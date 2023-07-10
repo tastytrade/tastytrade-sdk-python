@@ -43,19 +43,6 @@ from tastytrade_sdk.market_data.models import Quote, Candle, Greeks
 tasty = Tastytrade().login(login='trader@email.com', password='password')
 
 
-# Define some event handlers
-def on_quote(quote: Quote):
-    print(quote)
-
-
-def on_candle(candle: Candle):
-    print(candle)
-
-
-def on_greeks(greeks: Greeks):
-    print(greeks)
-
-
 # Subscribing to symbols across different instrument types
 symbols = [
     'BTC/USD',
@@ -65,12 +52,11 @@ symbols = [
     './ESU3 EW2N3 230714C4310'
 ]
 
-subscription = tasty.market_data.subscribe(
-    symbols=symbols,
-    on_quote=on_quote,
-    on_candle=on_candle,
-    on_greeks=on_greeks
-)
+# Define a handler for market data messages
+def on_message(message: dict) -> None:
+    print(message)
+
+subscription = tasty.market_data.subscribe(symbols=symbols, on_message=on_message)
 
 # start streaming
 subscription.open()

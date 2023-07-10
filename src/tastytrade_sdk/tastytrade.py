@@ -1,10 +1,10 @@
 from injector import Injector
 
-from tastytrade_sdk.account import Account
+from tastytrade_sdk.accounts.accounts import Accounts
 from tastytrade_sdk.config import Config
 from tastytrade_sdk.api import Api, RequestsSession
 from tastytrade_sdk.market_data.market_data import MarketData
-from tastytrade_sdk.orders.orders import Orders
+from tastytrade_sdk.orders import Orders
 
 
 class Tastytrade:
@@ -12,14 +12,18 @@ class Tastytrade:
     The SDK's top-level class
     """
 
-    def __init__(self, api_base_url: str = 'api.tastytrade.com'):
+    def __init__(self, api_base_url: str = 'api.tastytrade.com',
+                 account_streaming_base_url: str = 'streamer.tastyworks.com'):
         """
         :param api_base_url: Optionally override the base URL used by the API
-        (when using the sandbox environment, for e.g.)
+        :param account_streaming_base_url: Optionally override the base URL used for account streaming
         """
 
         def configure(binder):
-            binder.bind(Config, to=Config(api_base_url=api_base_url))
+            binder.bind(Config, to=Config(
+                api_base_url=api_base_url,
+                account_streaming_base_url=account_streaming_base_url
+            ))
 
         self.__container = Injector(configure)
 
@@ -36,9 +40,15 @@ class Tastytrade:
         """
         self.api.delete('/sessions')
 
-    def account(self, account_number: str) -> Account:
+    @property
+    def accounts(self) -> Accounts:
         """@private"""
-        return Account(account_number, api=self.api, orders=self.__container.get(Orders))
+        return self.__container.get(Accounts)
+
+    @property
+    def orders(self) -> Orders:
+        """@private"""
+        return self.__container.get(Orders)
 
     @property
     def market_data(self) -> MarketData:
