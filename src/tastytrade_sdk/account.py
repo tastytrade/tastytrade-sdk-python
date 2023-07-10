@@ -66,3 +66,9 @@ class Account:
         https://developer.tastytrade.com/open-api-spec/orders/#/orders/postAccountsAccountNumberOrders
         """
         return self.__orders.place_order(self.__account_number, order)
+
+    def cancel_orders(self, order_ids: List[int]) -> None:
+        """
+        https://developer.tastytrade.com/open-api-spec/orders/#/orders/deleteAccountsAccountNumberOrdersId
+        """
+        self.__orders.cancel(self.__account_number, order_ids)
