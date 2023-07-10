@@ -8,10 +8,8 @@ def main():
         account_number='5WT06363',
         timeout_seconds=5,
         order=Order(
-            order_type='Limit',
+            order_type='Market',
             time_in_force='Day',
-            price=1.5,
-            price_effect='Debit',
             legs=[
                 Leg(
                     instrument_type='Equity',

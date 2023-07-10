@@ -30,9 +30,9 @@ class Order:
     """@private"""
     order_type: str
     time_in_force: str
-    price: float
-    price_effect: str
     legs: List[Leg]
+    price: Optional[float] = None
+    price_effect: Optional[str] = None
 
     @property
     def json(self) -> dict:
