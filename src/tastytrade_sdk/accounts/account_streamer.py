@@ -1,4 +1,4 @@
-from typing import Any, List, Callable
+from typing import Any, List, Callable, Optional
 
 from tastytrade_sdk.websocket import Websocket
 
@@ -9,16 +9,22 @@ class AccountStreamer:
         self.__token = token
         self.__websocket = Websocket(f'wss://{base_url}')
 
-    def start(self, on_message: Callable[[dict], None]) -> None:
+    def start(self, on_message: Callable[[dict], None], timeout_seconds: Optional[int] = None) -> 'AccountStreamer':
         self.__websocket.open(
             connect_action=lambda: self.__send('connect', self.__account_numbers),
             on_message=self.__wrap_on_message(on_message),
-            keepalive_action=lambda: self.__send('heartbeat')
+            keepalive_action=lambda: self.__send('heartbeat'),
+            timeout_seconds=timeout_seconds
         )
+        return self
 
     def stop(self) -> None:
         if self.__websocket:
             self.__websocket.close()
+
+    def join(self) -> None:
+        if self.__websocket:
+            self.__websocket.join()
 
     @staticmethod
     def __wrap_on_message(on_message: Callable[[dict], None]) -> Callable:
