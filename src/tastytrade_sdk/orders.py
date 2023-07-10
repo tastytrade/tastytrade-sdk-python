@@ -65,27 +65,20 @@ class Orders:
         :param timeout_seconds: How long to wait for fills. If not provided, will wait indefinitely
         :return: True if all legs were filled, False if timed out
         """
-        order_id = self.__api.post(f'/accounts/{account_number}/orders', data=order.json)['data']['order']['id']
-        streamer = self.__accounts.get_streamer(account_numbers=[account_number])
-
         is_all_filled = False
-
-        def __is_all_filled(_order: dict) -> bool:
-            return all(leg['remaining-quantity'] == 0 for leg in _order['legs'])
+        order_id = None
 
         def __on_message(message: dict) -> None:
             nonlocal is_all_filled
+            nonlocal order_id
             if message.get('type') == 'Order' and message['data']['id'] == order_id:
-                if __is_all_filled(message['data']):
-                    is_all_filled = True
+                is_all_filled = all(float(leg['remaining-quantity']) == 0 for leg in message['data']['legs'])
+                if is_all_filled:
                     streamer.stop()
 
-        streamer.start(on_message=__on_message, timeout_seconds=timeout_seconds)
-
-        if __is_all_filled(self.__api.get(f'/accounts/{account_number}/orders/{order_id}')['data']):
-            is_all_filled = True
-            streamer.stop()
-
+        streamer = self.__accounts.get_streamer(account_numbers=[account_number]) \
+            .start(on_message=__on_message, timeout_seconds=timeout_seconds)
+        order_id = self.__api.post(f'/accounts/{account_number}/orders', data=order.json)['data']['order']['id']
         streamer.join()
         return is_all_filled
 

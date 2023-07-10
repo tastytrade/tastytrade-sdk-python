@@ -1,8 +1,11 @@
+import logging
+
 from tastytrade_sdk import Order, Leg
 from tests.utils import get_tasty
 
 
 def main():
+    logging.basicConfig(level=logging.DEBUG)
     tasty = get_tasty()
     print(tasty.orders.place_order_and_wait(
         account_number='5WT06363',
@@ -15,7 +18,7 @@ def main():
                     instrument_type='Equity',
                     symbol='DOCU',
                     action='Buy to Open',
-                    quantity=1
+                    quantity=0.15
                 )
             ]
         )

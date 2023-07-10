@@ -52,7 +52,7 @@ class Websocket:
         self.__receive_thread = LoopThread(self.__wrap_on_message(on_message))
         self.__keepalive_thread = LoopThread(keepalive_action, timeout_seconds=15)
         if timeout_seconds:
-            self.__timeout_thread = LoopThread(self.close, timeout_seconds=timeout_seconds)
+            self.__timeout_thread = LoopThread(self.close, timeout_seconds=timeout_seconds, run_immediately=False)
 
     def close(self) -> None:
         if self.__keepalive_thread:
