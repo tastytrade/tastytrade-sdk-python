@@ -10,10 +10,11 @@ class Tastytrade:
     The SDK's top-level class
     """
 
-    def __init__(self, api_base_url: str = 'api.tastytrade.com'):
+    def __init__(self, api_base_url: str = 'api.tastyworks.com'):
         """
         :param api_base_url: Optionally override the base URL used by the API
         (when using the sandbox environment, for e.g.)
+        cert url is 'api.cert.tastyworks.com'
         """
 
         def configure(binder):
@@ -21,11 +22,16 @@ class Tastytrade:
 
         self.__container = Injector(configure)
 
-    def login(self, login: str, password: str) -> 'Tastytrade':
+    def login(self, login: str, password: str = None, remember_token = None, remember_me: bool = True) -> 'Tastytrade':
         """
         Initialize a logged-in session
         """
-        self.__container.get(RequestsSession).login(login, password)
+        if not remember_token:
+            self.__container.get(RequestsSession).login(login, password=password, remember_me=remember_me)
+        elif not password:
+            self.__container.get(RequestsSession).login(login, remember_token=remember_token, remember_me=remember_me)
+        else:
+            print("Error: you must provide a password or remember token to log in")
         return self
 
     def logout(self) -> None:
