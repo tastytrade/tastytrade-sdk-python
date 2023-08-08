@@ -16,6 +16,8 @@ class Tastytrade:
         (when using the sandbox environment, for e.g.)
         """
 
+        print("Creating Tastytrade instance!")
+
         def configure(binder):
             binder.bind(Config, to=Config(api_base_url=api_base_url))
 
