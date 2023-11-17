@@ -4,7 +4,7 @@
 * Python 3.8+
   * [pyenv](https://github.com/pyenv/pyenv#installation) recommended for managing python versions
 * [Poetry](https://python-poetry.org/docs/) - for managing dependencies and virtual environments
-* The [GitHub CLI tool](https://cli.github.com/) - used by the `release` scripts to open PRs
+* The [hub CLI tool](https://github.com/github/hub#installation) - used by the `release` scripts to open PRs in github
 * Recommended IDE: [PyCharm](https://www.jetbrains.com/pycharm/download/)
 
 ## Getting Started

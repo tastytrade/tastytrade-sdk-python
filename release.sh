@@ -41,4 +41,4 @@ git add pyproject.toml
 git commit -m "Bumping to next pre-patch version ${NEW_PREPATCH_VERSION}"
 git push
 
-gh pr create -t "Release ${NEW_VERSION}" -b ""
+hub pull-request -m "Release ${NEW_VERSION}"
