@@ -22,7 +22,7 @@ if [[ -n $(git status -s) ]]; then
   exit 1
 fi
 
-if [[ $(git rev-parse HEAD) != $(git rev-parse master@{upstream}) ]]; then
+if [[ $(git rev-parse HEAD) != $(git rev-parse origin/master) ]]; then
   echo 'Local master is not in sync with remote. Exiting.'
   exit 1
 fi
