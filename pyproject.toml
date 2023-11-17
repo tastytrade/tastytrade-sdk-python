@@ -18,11 +18,11 @@ repository = "https://github.com/tastytrade/tastytrade-sdk-python"
 [tool.poetry.dependencies]
 python = "^3.8"
 injector = "^0.20.1"
-requests = "2.29.0"
 websockets = "^11.0.3"
 bidict = "^0.22.1"
 strenum = "^0.4.15"
 ujson = "^5.8.0"
+requests = "^2.31.0"
 
 [tool.poetry.group.dev.dependencies]
 python-dotenv = "^1.0.0"
