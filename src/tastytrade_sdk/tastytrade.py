@@ -16,10 +16,10 @@ class Tastytrade:
         (when using the sandbox environment, for e.g.)
         """
 
-        def configure(binder):
+        def __configure(binder):
             binder.bind(Config, to=Config(api_base_url=api_base_url))
 
-        self.__container = Injector(configure)
+        self.__container = Injector(__configure)
 
     def login(self, login: str, password: str) -> 'Tastytrade':
         """

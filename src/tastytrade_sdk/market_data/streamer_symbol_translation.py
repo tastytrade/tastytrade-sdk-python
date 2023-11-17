@@ -1,5 +1,5 @@
 import urllib.parse
-from typing import List, Optional, Tuple, Any
+from typing import List, Optional, Tuple, Any, Dict
 
 from bidict import bidict
 from injector import inject
@@ -8,8 +8,8 @@ from tastytrade_sdk.api import Api
 
 
 class StreamerSymbolTranslations:
-    def __init__(self, translations: List[Tuple[str, str]]):
-        self.__bidict = bidict(dict(translations))
+    def __init__(self, translations: Dict[str, str]):
+        self.__bidict = bidict(translations)
 
     def get_streamer_symbol(self, symbol: str) -> str:
         return self.__bidict.get(symbol)
@@ -28,19 +28,20 @@ class StreamerSymbolTranslationsFactory:
         self.__api = api
 
     def create(self, symbols: List[str]) -> StreamerSymbolTranslations:
-        equities = self.__get_symbol_translations('equities', symbols)
-        futures = self.__get_symbol_translations('futures', symbols)
-        equity_options = self.__get_symbol_translations('equity-options', symbols, [('with-expired', True)])
-        future_options = self.__get_symbol_translations('future-options', symbols)
-        cryptos = self.__get_symbol_translations('cryptocurrencies', symbols)
-        return StreamerSymbolTranslations(equities + futures + equity_options + future_options + cryptos)
+        return StreamerSymbolTranslations({
+            **self.__get_symbol_translations('equities', symbols),
+            **self.__get_symbol_translations('futures', symbols),
+            **self.__get_symbol_translations('equity-options', symbols, [('with-expired', True)]),
+            **self.__get_symbol_translations('future-options', symbols),
+            **self.__get_symbol_translations('cryptocurrencies', symbols)
+        })
 
     def __get_symbol_translations(self, path_key: str, symbols: Optional[List[str]] = None,
-                                  extra_params: Optional[List[Tuple[str, Any]]] = None) -> List[Tuple[str, str]]:
+                                  extra_params: Optional[List[Tuple[str, Any]]] = None) -> Dict[str, str]:
         if not symbols:
-            return []
+            return {}
         items = self.__api.get(
             f'/instruments/{path_key}',
             params=[('symbol[]', urllib.parse.quote(x.upper())) for x in symbols or []] + (extra_params or [])
         ).get('data').get('items')
-        return [(x['symbol'], x['streamer-symbol']) for x in items if 'streamer-symbol' in x]
+        return {x['symbol']: x['streamer-symbol'] for x in items if 'streamer-symbol' in x}
