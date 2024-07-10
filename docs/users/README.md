@@ -42,6 +42,7 @@ from tastytrade_sdk import Tastytrade
 tasty = Tastytrade().login(login='trader@email.com', password='password')
 
 # Subscribing to symbols across different instrument types
+# Please note: The option symbols here are expired. You need to subscribe to an unexpired symbol to receive quote data
 symbols = [
     'BTC/USD',
     'SPY',
