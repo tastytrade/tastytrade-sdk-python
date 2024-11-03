@@ -43,7 +43,14 @@ class RequestsSession:
             raise Unauthorized()
         if response.status_code >= 500:
             raise ServerError()
-        raise Unknown()
+        
+        # Try to get error details from response
+        try:
+            error_details = response.json()
+        except JSONDecodeError:
+            error_details = response.text
+            
+        raise Unknown(error_details)
 
     def __url(self, path: str, params: Optional[QueryParams] = None) -> str:
         url = f'{self.__base_url}{path}'
@@ -115,5 +122,7 @@ class ServerError(TastytradeSdkException):
 
 
 class Unknown(TastytradeSdkException):
-    def __init__(self):
-        super().__init__('Unknown Error')
+    def __init__(self, error_details=None):
+        message = f'Unknown Error: {error_details}' if error_details else 'Unknown Error'
+        super().__init__(message)
+        self.error_details = error_details
