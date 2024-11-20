@@ -142,6 +142,7 @@ class Subscription:
         with self.__condition:
             self.__condition.wait_for(condition, 0.1)
 
+    # pylint: disable=too-many-branches
     def __receive(self) -> None:
         if not self.__websocket:
             return
@@ -151,7 +152,6 @@ class Subscription:
             return
         _type = message['type']
         cond = self.__condition
-        # pylint: disable=too-many-branches
         # TODO: Convert this into some more appropriate structure to avoid branch bloat.
         if _type == 'ERROR':
             raise StreamerException(message['error'], message['message'])
@@ -187,7 +187,7 @@ class Subscription:
                 elif isinstance(event, list):
                     if event_handler:
                         full_event = self.__unpack_event(event_type, event)
-                        event_handler(full_event)
+                        event_handler(full_event)  # pylint: disable=not-callable
                 elif isinstance(event, dict):
                     handler = self.__handler_for(event['eventType'])
                     if handler:
@@ -195,7 +195,7 @@ class Subscription:
                         handler(event)
         else:
             _LOGGER.debug('Unhandled message type: %s', _type)
-        # pyline: enable=too-many-branches
+    # pyline: enable=too-many-branches
 
     def __unpack_event(self, event_type, event) -> Optional[list[str]]:
         if (config := self.__feed_config) and (config_fields := config.get('eventFields')):
