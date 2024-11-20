@@ -1,3 +1,4 @@
+import logging
 from typing import List, Callable
 
 from injector import inject
@@ -5,6 +6,8 @@ from injector import inject
 from tastytrade_sdk.api import Api
 from tastytrade_sdk.market_data.streamer_symbol_translation import StreamerSymbolTranslationsFactory
 from tastytrade_sdk.market_data.subscription import Subscription
+
+_LOGGER = logging.getLogger(__name__)
 
 
 class MarketData:
@@ -22,7 +25,8 @@ class MarketData:
                   symbols: List[str],
                   on_candle: Callable[[dict], None] = None,
                   on_greeks: Callable[[dict], None] = None,
-                  on_quote: Callable[[dict], None] = None
+                  on_quote: Callable[[dict], None] = None,
+                  **kwargs,
                   ) -> Subscription:
         """
         Subscribe to live feed data
@@ -31,12 +35,14 @@ class MarketData:
         :param on_greeks: Handler for greeks events
         :param on_quote: Handler for quote events
         """
-        data = self.__api.get('/quote-streamer-tokens')['data']
+        data = self.__api.get('/api-quote-tokens')['data']
+        _LOGGER.debug('Subscribing to DXLink feed: %s', data['dxlink-url'])
         return Subscription(
             data['dxlink-url'],
             data['token'],
             self.__streamer_symbol_translations_factory.create(symbols),
             on_candle=on_candle,
             on_greeks=on_greeks,
-            on_quote=on_quote
+            on_quote=on_quote,
+            **kwargs
         )

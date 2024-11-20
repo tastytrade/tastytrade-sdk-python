@@ -9,6 +9,8 @@ from tastytrade_sdk.exceptions import TastytradeSdkException
 
 QueryParams = Union[Dict[str, Any], List[Tuple[str, Any]]]
 
+_LOGGER = logging.getLogger(__name__)
+
 
 @singleton
 class RequestsSession:
@@ -29,7 +31,7 @@ class RequestsSession:
     def request(self, method: str, path: str, params: Optional[QueryParams] = tuple(),
                 data: Optional[dict] = None) -> Optional[dict]:
         url = self.__url(path, params)
-        logging.debug('%s %s', path, params)
+        _LOGGER.debug('%s %s', path, params)
         response = self.__session.request(method, url, json=data, headers={'User-Agent': self.__user_agent})
         is_ok = 200 <= response.status_code <= 399
         if is_ok:
