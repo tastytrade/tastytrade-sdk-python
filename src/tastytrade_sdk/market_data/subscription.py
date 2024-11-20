@@ -1,3 +1,4 @@
+# pylint: disable=c-extension-no-member
 import logging
 import threading
 import time
@@ -150,6 +151,8 @@ class Subscription:
             return
         _type = message['type']
         cond = self.__condition
+        # pylint: disable=too-many-branches
+        # TODO: Convert this into some more appropriate structure to avoid branch bloat.
         if _type == 'ERROR':
             raise StreamerException(message['error'], message['message'])
         if _type == 'SETUP':
@@ -176,16 +179,15 @@ class Subscription:
         elif _type == 'FEED_DATA':
             data = message['data']
             event_type = None
-            event_handler = None
+            event_handler: Optional[Callable] = None
             for event in data:
                 if isinstance(event, str):
                     event_type = event
                     event_handler = self.__handler_for(event_type)
                 elif isinstance(event, list):
-                    if not event_handler:
-                        continue
-                    full_event = self.__unpack_event(event_type, event)
-                    event_handler(full_event)
+                    if event_handler:
+                        full_event = self.__unpack_event(event_type, event)
+                        event_handler(full_event)
                 elif isinstance(event, dict):
                     handler = self.__handler_for(event['eventType'])
                     if handler:
@@ -193,6 +195,7 @@ class Subscription:
                         handler(event)
         else:
             _LOGGER.debug('Unhandled message type: %s', _type)
+        # pyline: enable=too-many-branches
 
     def __unpack_event(self, event_type, event) -> Optional[list[str]]:
         if (config := self.__feed_config) and (config_fields := config.get('eventFields')):
