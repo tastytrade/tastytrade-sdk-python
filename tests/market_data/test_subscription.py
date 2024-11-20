@@ -28,6 +28,7 @@ class SubscriptionTest(TestCase):
         
         start = time.monotonic()
         subscription.open()
+        self.addCleanup(subscription.close)
         time.sleep(1.0)
         while not (quotes or symbols or greeks):
             now = time.monotonic()
@@ -35,8 +36,7 @@ class SubscriptionTest(TestCase):
                 subscription.close()
                 self.fail(f'Test timeout waiting for event data.\nEvents: quotes={len(quotes)}, candles={len(candles)}, greeks={len(greeks)}')
             time.sleep(1.0)
-        subscription.close()
 
         # Check fields
         for quote in quotes:
-            self.assertContainsExactly(quote.keys(), {'eventSymbol', 'symbol', 'askPrice'})
+            self.assertEqual(set(quote.keys()), {'eventSymbol', 'symbol', 'askPrice'})
