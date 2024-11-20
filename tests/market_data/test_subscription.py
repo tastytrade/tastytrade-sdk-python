@@ -1,4 +1,3 @@
-import logging
 import time
 from unittest import TestCase
 
@@ -23,18 +22,18 @@ class SubscriptionTest(TestCase):
 
         subscription = tasty.market_data.subscribe(
             symbols=symbols,
-            on_quote=lambda e: quotes.append(e),
+            on_quote=quotes.append,
             event_fields=fields)
-        
+
         start = time.monotonic()
         subscription.open()
         self.addCleanup(subscription.close)
         time.sleep(1.0)
-        while not (quotes or symbols or greeks):
+        while not quotes:
             now = time.monotonic()
             if now - start > TIMEOUT:
                 subscription.close()
-                self.fail(f'Test timeout waiting for event data.\nEvents: quotes={len(quotes)}, candles={len(candles)}, greeks={len(greeks)}')
+                self.fail(f'Test timeout waiting for event data.\nEvents: quotes={len(quotes)}')
             time.sleep(1.0)
 
         # Check fields

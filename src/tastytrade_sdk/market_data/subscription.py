@@ -33,14 +33,14 @@ class LoopThread(threading.Thread):
         if not self.__timeout_seconds:
             return
         start = time.monotonic()
-        cv = self.__condition
+        cond = self.__condition
         remaining = self.__timeout_seconds
         while self.__running and remaining > 0:
             now = time.monotonic()
             remaining = self.__timeout_seconds - (now - start)
             if remaining > 0:
-                with cv:
-                    cv.wait(remaining)
+                with cond:
+                    cond.wait(remaining)
 
     def stop(self):
         with self.__condition:
@@ -55,8 +55,8 @@ class Subscription:
     __is_authorized: bool = False
     __channel_opened: Optional[dict] = None
     __feed_config: Optional[dict] = None
-    __aggregation_period: Optional[float] = None,
-    __event_fields: Optional[dict[str, list[str]]] = None,
+    __aggregation_period: Optional[float] = None
+    __event_fields: Optional[dict[str, list[str]]] = None
     __condition: threading.Condition
 
     def __init__(self, url: str, token: str, streamer_symbol_translations: StreamerSymbolTranslations,
@@ -106,7 +106,7 @@ class Subscription:
         self.__wait_for(lambda: self.__channel_opened)
 
         self.__feed_config = None
-        
+
         setup_params = {}
         if self.__aggregation_period is not None:
             setup_params['acceptAggregationPeriod'] = self.__aggregation_period
@@ -115,23 +115,23 @@ class Subscription:
             setup_params['acceptEventFields'] = self.__event_fields
         else:
             setup_params['acceptDataFormat'] = 'FULL'
-        self.__send('FEED_SETUP', channel=1, **setup_params)      
+        self.__send('FEED_SETUP', channel=1, **setup_params)
 
         self.__send('FEED_SUBSCRIPTION', channel=1, add=subscriptions)
         return self
 
     def close(self) -> None:
         """Close the stream connection"""
-        if kt := self.__keepalive_thread:
-            kt.stop()
-            kt.join()
+        if thread := self.__keepalive_thread:
+            thread.stop()
+            thread.join()
             self.__keepalive_thread = None
-        if rt := self.__receive_thread:
-            rt.stop()
-            rt.join()
+        if thread := self.__receive_thread:
+            thread.stop()
+            thread.join()
             self.__receive_thread = None
-        if ws := self.__websocket:
-            ws.close()
+        if socket := self.__websocket:
+            socket.close()
             self.__websocket = None
         self.__feed_config = None
         self.__is_authorized = False
@@ -149,7 +149,7 @@ class Subscription:
         except ConnectionClosedOK:
             return
         _type = message['type']
-        cv = self.__condition
+        cond = self.__condition
         if _type == 'ERROR':
             raise StreamerException(message['error'], message['message'])
         if _type == 'SETUP':
@@ -157,19 +157,19 @@ class Subscription:
             self.__keepalive_thread = LoopThread(lambda: self.__send('KEEPALIVE'), keepalive_interval)
         elif _type == 'AUTH_STATE':
             auth_state = message['state'] == 'AUTHORIZED'
-            with cv:
+            with cond:
                 self.__is_authorized = auth_state
-                cv.notify_all()
+                cond.notify_all()
             _LOGGER.debug('Got auth state: %s', auth_state)
         elif _type == 'FEED_CONFIG':
-            with cv:
+            with cond:
                 self.__feed_config = message
-                cv.notify_all()
+                cond.notify_all()
             _LOGGER.info('Got feed config: %s', message)
         elif _type == 'CHANNEL_OPENED':
-            with cv:
+            with cond:
                 self.__channel_opened = message
-                cv.notify_all()
+                cond.notify_all()
             _LOGGER.info('Got channel open: %s', message)
         elif _type == 'KEEPALIVE':
             pass
@@ -178,28 +178,25 @@ class Subscription:
             event_type = None
             event_handler = None
             for event in data:
-                try:
-                    if isinstance(event, str):
-                        event_type = event
-                        event_handler = self.__handler_for(event_type)
-                    elif isinstance(event, list):
-                        if not event_handler:
-                            continue
-                        full_event = self.__unpack_event(event_type, event)
-                        event_handler(full_event)
-                    elif isinstance(event, dict):
-                        handler = self.__handler_for(event['eventType'])
-                        if handler:
-                            self.__update_event(event)
-                            handler(event)
-                except Exception:
-                    _LOGGER.exception('Error handling event %r', event)
+                if isinstance(event, str):
+                    event_type = event
+                    event_handler = self.__handler_for(event_type)
+                elif isinstance(event, list):
+                    if not event_handler:
+                        continue
+                    full_event = self.__unpack_event(event_type, event)
+                    event_handler(full_event)
+                elif isinstance(event, dict):
+                    handler = self.__handler_for(event['eventType'])
+                    if handler:
+                        self.__update_event(event)
+                        handler(event)
         else:
             _LOGGER.debug('Unhandled message type: %s', _type)
 
     def __unpack_event(self, event_type, event) -> Optional[list[str]]:
-        if (fc := self.__feed_config) and (ef := fc.get('eventFields')):
-            fields = ef.get(event_type)
+        if (config := self.__feed_config) and (config_fields := config.get('eventFields')):
+            fields = config_fields.get(event_type)
             if len(event) != len(fields):
                 raise ValueError(f'Event and field length do not match: {len(event)} vs {len(fields)}')
             full_event = dict(zip(fields, event))
@@ -207,17 +204,17 @@ class Subscription:
             return full_event
         return None
 
-    def __update_event(self, event: dict):
+    def __update_event(self, event: dict) -> None:
         if symbol := event.get('eventSymbol'):
             original_symbol = self.__streamer_symbol_translations.get_original_symbol(symbol)
             event['symbol'] = original_symbol
 
-    def __handler_for(self, event_type):
+    def __handler_for(self, event_type) -> Optional[Callable]:
         if event_type == 'Quote' and self.__on_quote:
             return self.__on_quote
-        elif event_type == 'Candle' and self.__on_candle:
+        if event_type == 'Candle' and self.__on_candle:
             return self.__on_candle
-        elif event_type == 'Greeks' and self.__on_greeks:
+        if event_type == 'Greeks' and self.__on_greeks:
             return self.__on_greeks
         _LOGGER.debug('No handler registered for %s', event_type)
         return None
