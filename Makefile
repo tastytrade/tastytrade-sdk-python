@@ -18,3 +18,7 @@ release_minor:
 
 release_major:
 	./release.sh major
+
+# Use `LOGLEVEL=debug make run_experiment` to view debug logs.
+run_experiment:
+	PYTHONPATH=. poetry run python3 tests/market_data_experiment.py
