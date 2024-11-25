@@ -1,5 +1,5 @@
 import logging
-from typing import List, Callable
+from typing import Callable, List, Optional
 
 from injector import inject
 
@@ -26,6 +26,8 @@ class MarketData:
                   on_candle: Callable[[dict], None] = None,
                   on_greeks: Callable[[dict], None] = None,
                   on_quote: Callable[[dict], None] = None,
+                  aggregation_period: Optional[float] = None,
+                  event_fields: Optional[dict[str, list[str]]] = None,
                   **kwargs,
                   ) -> Subscription:
         """
@@ -34,6 +36,17 @@ class MarketData:
         :param on_candle: Handler for candle events
         :param on_greeks: Handler for greeks events
         :param on_quote: Handler for quote events
+        :param aggregation_period: Desired aggregation period of events (in seconds)
+        :param event_fields: If provided, a dict mapping one or more event types to lists of event fields.
+            The event types recognized are 'Quote', 'Greeks', and 'Candle'. If specified, the server will be
+            asked to send only these fields in a compact format. Compact events will be translated to the same
+            dictionary format as full events, though with missing keys.
+            Example:
+            ```
+            {
+                "Quote": ["eventType", "eventSymbol", "bidPrice", "askPrice", "bidSize", "askSize"]
+            }
+            ```
         """
         data = self.__api.get('/api-quote-tokens')['data']
         _LOGGER.debug('Subscribing to DXLink feed: %s', data['dxlink-url'])
@@ -44,5 +57,7 @@ class MarketData:
             on_candle=on_candle,
             on_greeks=on_greeks,
             on_quote=on_quote,
+            aggregation_period=aggregation_period,
+            event_fields=event_fields,
             **kwargs
         )
