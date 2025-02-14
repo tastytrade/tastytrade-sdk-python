@@ -5,7 +5,7 @@
 # Getting Started
 
 Before using this SDK, ensure that you:
-* have a [Tastytrade account](https://start.tastytrade.com/)
+* have a [Tastytrade account](https://open.tastytrade.com/)
 * have opted into the [Tastytrade Open API program](https://developer.tastytrade.com/)
 
 ## Install
