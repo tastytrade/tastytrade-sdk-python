@@ -1,0 +1,114 @@
+import requests
+import json
+import time
+import smtplib
+from email.message import EmailMessage
+import telegram
+
+# Tastytrade Sandbox API Credentials
+USERNAME = "your_crknaack"
+PASSWORD = "your_Crk@651954ab"
+BASE_URL = "https://api.cert.tastyworks.com"  # Sandbox environment base URL
+STREAMER_URL = "wss://streamer.cert.tastyworks.com"  # WebSocket for account updates
+
+# Email Notification Setup
+EMAIL_SENDER = "your_crknaack@verizon.net"
+EMAIL_RECEIVER = "your_alert_crknaack@verizon.net"
+EMAIL_PASSWORD = "your_email_Mrchuck@203"
+
+# Telegram Notification Setup
+TELEGRAM_BOT_TOKEN = "your_telegram_bot_token"
+TELEGRAM_CHAT_ID = "your_chat_id"
+
+# Step 1: Authenticate with Tastytrade API (Sandbox Mode)
+def authenticate():
+    url = f"{BASE_URL}/sessions"
+    payload = {"login": crknaack, "password": Crk@651954ab}
+    response = requests.post(url, json=payload)
+    
+    if response.status_code == 201:
+        data = response.json()
+        return data["data"]["token"]  # Return authentication token
+    else:
+        raise Exception("Authentication failed: " + response.text)
+
+# Step 2: Get Account Details
+def get_accounts(auth_token):
+    headers = {"Authorization": f"Bearer {auth_token}"}
+    url = f"{BASE_URL}/accounts"
+    response = requests.get(url, headers=headers)
+    return response.json()
+
+# Step 3: Place an Order (Sandbox Mode)
+def place_trade(auth_token, account_number, symbol, strategy, quantity, price):
+    headers = {"Authorization": f"Bearer {auth_token}", "Content-Type": "application/json"}
+    url = f"{BASE_URL}/accounts/{account_number}/orders"
+    
+    order_payload = {
+        "symbol": symbol,
+        "quantity": quantity,
+        "order-type": "LIMIT",
+        "price": price,
+        "time-in-force": "GTC",
+        "order-strategy": strategy,
+        "action": "BUY_TO_OPEN"
+    }
+    
+    response = requests.post(url, headers=headers, json=order_payload)
+    return response.json()
+
+# Step 4: Monitor Trades and Send Alerts
+def monitor_positions(auth_token, account_number):
+    headers = {"Authorization": f"Bearer {auth_token}"}
+    url = f"{BASE_URL}/accounts/{account_number}/positions"
+    response = requests.get(url, headers=headers)
+    return response.json()
+
+# Step 5: Send Email Alerts for Trade Executions
+def send_email_alert(subject, body):
+    msg = EmailMessage()
+    msg.set_content(body)
+    msg["Subject"] = subject
+    msg["From"] = EMAIL_SENDER
+    msg["To"] = EMAIL_RECEIVER
+    
+    with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
+        server.login(EMAIL_SENDER, EMAIL_PASSWORD)
+        server.send_message(msg)
+
+# Step 6: Send Telegram Alerts
+def send_telegram_alert(message):
+    bot = telegram.Bot(token=TELEGRAM_BOT_TOKEN)
+    bot.send_message(chat_id=TELEGRAM_CHAT_ID, text=message)
+
+# Step 7: Automated Paper Trading Loop (Sandbox Mode)
+def paper_trading_bot():
+    auth_token = authenticate()
+    accounts = get_accounts(auth_token)
+    account_number = accounts["data"][0]["account-number"]
+    
+    strategies = [
+        {"symbol": "MNQ", "strategy": "Iron Condor", "quantity": 1, "price": 2.50},
+        {"symbol": "MNQ", "strategy": "Strangle", "quantity": 1, "price": 1.50},
+        {"symbol": "SPY", "strategy": "Covered Call", "quantity": 1, "price": 2.00},
+        {"symbol": "TSLA", "strategy": "Put Credit Spread", "quantity": 1, "price": 3.50}  # Note: Prices >3 will remain Live
+    ]
+    
+    for trade in strategies:
+        order_response = place_trade(auth_token, account_number, trade["symbol"], trade["strategy"], trade["quantity"], trade["price"])
+        alert_message = f"Trade Executed (Sandbox Mode):\n{json.dumps(order_response, indent=4)}"
+        send_email_alert("Trade Executed (Sandbox Mode)", alert_message)
+        send_telegram_alert(alert_message)
+        print("Order Response:", order_response)
+    
+    # Monitor positions and send alerts every 60 seconds
+    while True:
+        positions = monitor_positions(auth_token, account_number)
+        alert_message = f"Current Positions (Sandbox Mode):\n{json.dumps(positions, indent=4)}"
+        send_email_alert("Current Positions (Sandbox Mode)", alert_message)
+        send_telegram_alert(alert_message)
+        print("Current Positions:", positions)
+        time.sleep(60)  # Wait before checking again
+
+# Run Paper Trading Mode in Sandbox (Enable only after API setup)
+# paper_trading_bot()
