@@ -1,7 +1,7 @@
 # Developer Guide
 
 ## Requirements
-* Python 3.8+
+* [The correct python version](../../.python-version) installed on your system
   * [pyenv](https://github.com/pyenv/pyenv#installation) recommended for managing python versions
 * [Poetry](https://python-poetry.org/docs/) - for managing dependencies and virtual environments
 * The [hub CLI tool](https://github.com/github/hub#installation) - used by the `release` scripts to open PRs in github
