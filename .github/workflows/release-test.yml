@@ -35,9 +35,9 @@ jobs:
       - run: make lint
       - run: make test
         env:
-          API_BASE_URL: ${{ vars.API_BASE_URL }}
-          TASTYTRADE_LOGIN: ${{ secrets.TASTYTRADE_LOGIN }}
-          TASTYTRADE_PASSWORD: ${{ secrets.TASTYTRADE_PASSWORD }}
+          API_BASE_URL: ${{ vars.TASTYTRADE_CERT_URL }}
+          TASTYTRADE_LOGIN: ${{ secrets.TASTYTRADE_CERT_LOGIN }}
+          TASTYTRADE_PASSWORD: ${{ secrets.TASTYTRADE_CERT_PASSWORD }}
       - name: Build with Poetry
         run: |
           poetry version "$(poetry version -s)dev${GITHUB_RUN_NUMBER}"
