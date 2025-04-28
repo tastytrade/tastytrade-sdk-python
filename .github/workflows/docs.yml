@@ -23,7 +23,7 @@ jobs:
       - name: build docs
         run: |
           poetry run pdoc src/tastytrade_sdk --docformat numpy --no-show-source -t docs/users -o docs/
-      - uses: actions/upload-pages-artifact@v1
+      - uses: actions/upload-pages-artifact@v2
         with:
           path: docs/
   deploy_docs:
