@@ -15,9 +15,14 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
-    name: Build distribution 📦
+  build-deploy:
+    name: Build & Deploy
     runs-on: ubuntu-latest
+    environment:
+      name: testpypi
+      url: https://test.pypi.org/p/tastytrade-sdk
+    permissions:
+      id-token: write
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -37,27 +42,6 @@ jobs:
         run: |
           poetry version "$(poetry version -s)dev${GITHUB_RUN_NUMBER}"
           poetry build
-      - name: Store the distribution packages
-        uses: actions/upload-artifact@v4
-        with:
-          name: python-package-distributions
-          path: dist/
-  publish:
-    name: Publish Python 🐍 distribution 📦 to TestPyPI
-    needs:
-      - build
-    runs-on: ubuntu-latest
-    environment:
-      name: testpypi
-      url: https://test.pypi.org/p/tastytrade-sdk
-    permissions:
-      id-token: write
-    steps:
-      - name: Download all the dists
-        uses: actions/download-artifact@v4
-        with:
-          name: python-package-distributions
-          path: dist/
       - name: Publish distribution 📦 to TestPyPI
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
