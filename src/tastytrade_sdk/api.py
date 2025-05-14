@@ -120,10 +120,10 @@ class HttpError(TastytradeSdkException):
         error_code = data.get('code')
         error_message = data.get('message', 'No error message was provided.')
         if error_code and error_message:
-            message = f"{error_code}: {error_message}"
+            message = f'{error_code}: {error_message}'
         else:
             message = error_code or error_message
-        super().__init__(f"{reason} ({http_code}) {message}")
+        super().__init__(f'{reason} ({http_code}) {message}')
         self.reason = reason
         self.http_code = http_code
         self.error_code = error_code
