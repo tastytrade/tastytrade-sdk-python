@@ -39,13 +39,26 @@ class RequestsSession:
                 return response.json()
             except JSONDecodeError:
                 return None
+        try:
+            error_data = response.json()['error']
+        except (JSONDecodeError, KeyError):
+            error_data = {'code': 'unknown', 'message': f'Could not parse response body: {response.text}'}
+
         if response.status_code == 400:
-            raise BadRequest()
-        if response.status_code == 401:
-            raise Unauthorized()
-        if response.status_code >= 500:
-            raise ServerError()
-        raise Unknown()
+            error = BadRequest
+        elif response.status_code == 401:
+            error = Unauthorized
+        elif response.status_code == 403:
+            error = Forbidden
+        elif response.status_code == 404:
+            error = NotFound
+        elif response.status_code == 422:
+            error = Unprocessable
+        elif response.status_code >= 500:
+            error = ServerError
+        else:
+            error = HttpError
+        raise error(response.reason, response.status_code, error_data)
 
     def __url(self, path: str, params: Optional[QueryParams] = None) -> str:
         url = f'{self.__base_url}{path}'
@@ -101,21 +114,45 @@ class Api:
         return self.__session.request('DELETE', path, params=params)
 
 
-class Unauthorized(TastytradeSdkException):
-    def __init__(self):
-        super().__init__('Unauthorized')
+
+class HttpError(TastytradeSdkException):
+    def __init__(self, reason, http_code, data):
+        error_code = data.get('code')
+        error_message = data.get('message', 'No error message was provided.')
+        if error_code and error_message:
+            message = f"{error_code}: {error_message}"
+        else:
+            message = error_code or error_message
+        super().__init__(f"{reason} ({http_code}) {message}")
+        self.reason = reason
+        self.http_code = http_code
+        self.error_code = error_code
+        self.error_message = error_message
 
 
-class BadRequest(TastytradeSdkException):
-    def __init__(self):
-        super().__init__('Bad Request')
+class BadRequest(HttpError):
+    pass
 
 
-class ServerError(TastytradeSdkException):
-    def __init__(self):
-        super().__init__('Server Error')
+class Unauthorized(HttpError):
+    pass
 
 
-class Unknown(TastytradeSdkException):
-    def __init__(self):
-        super().__init__('Unknown Error')
+class Forbidden(HttpError):
+    pass
+
+
+class NotFound(HttpError):
+    pass
+
+
+class Unprocessable(HttpError):
+    pass
+
+
+class ServerError(HttpError):
+    pass
+
+
+# Provided for backwards compatibility
+Unknown = HttpError
