@@ -10,8 +10,8 @@
 ## Getting Started
 ```shell
 poetry install # sets up virtualenv and installs dependencies
-make lint # check codestyle
-make test # run tests
+poetry run lint # check codestyle
+poetry run test # run tests
 ```
 
 ## Codestyle
@@ -19,7 +19,7 @@ Code should be [pythonic](https://docs.python-guide.org/writing/style/) and shou
 [PEP](https://peps.python.org/pep-0008/) rules enforced by
 [pylint](https://pypi.org/project/pylint/).
 
-To check codestyle at any time, run `make lint`.
+To check codestyle at any time, run `poetry run lint`.
 
 ## Testing
 There's no explicit code coverage requirement. Contributors are expected to use their best judgement to maintain a test
@@ -44,9 +44,9 @@ All work should be done on a branch and submitted for PR review.
 
 ## Releasing
 When ready to release a new version of the SDK to pypi, run one of:
-* `make release_patch` - for bug fixes
-* `make release_minor` - for new features
-* `make release_major` - for breaking changes
+* `poetry run release_patch` - for bug fixes
+* `poetry run release_minor` - for new features
+* `poetry run release_major` - for breaking changes
 
 Each of these commands prompts you to create a new release PR in github.
 

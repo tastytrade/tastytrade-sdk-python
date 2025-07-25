@@ -1,26 +1,49 @@
 name: CI
-on:
-  workflow_dispatch:
-  push:
-    branches:
-      - '*'
-      - '!master'
+
+on: [push, pull_request]
+
 jobs:
-  deploy:
-    name: Check & Deploy Snapshot
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-python@v2
-        with:
-          python-version: '3.11'
-      - uses: snok/install-poetry@v1
-        with:
-          version: '1.8.3'
-      - run: poetry install
-      - run: make lint
-      - run: make test
-        env:
-          API_BASE_URL: ${{ vars.TASTYTRADE_CERT_URL }}
-          TASTYTRADE_LOGIN: ${{ secrets.TASTYTRADE_CERT_LOGIN }}
-          TASTYTRADE_PASSWORD: ${{ secrets.TASTYTRADE_CERT_PASSWORD }}
+    test:
+        name: Test on ${{ matrix.os }}
+        runs-on: ${{ matrix.os }}
+        strategy:
+            matrix:
+                os: [ubuntu-latest, macos-latest]
+                python-version: ['3.11', '3.12']
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: Set up Python
+              uses: actions/setup-python@v4
+              with:
+                  python-version: ${{ matrix.python-version }}
+
+            - name: Install Poetry
+              uses: snok/install-poetry@v1
+              with:
+                  version: '1.8.3'
+
+            - name: Display Poetry and Python version
+              run: |
+                  poetry --version
+                  python --version
+
+            - name: Cache Poetry dependencies
+              uses: actions/cache@v4
+              id: cached-poetry-dependencies
+              with:
+                  path: ~/.cache/pypoetry/virtualenvs
+                  key: venv-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('**/poetry.lock') }}
+
+            - name: Install dependencies
+              run: poetry install --no-interaction --no-root
+              if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
+
+            - name: Run checks
+              run: poetry run check
+              env:
+                  API_BASE_URL: ${{ vars.TASTYTRADE_CERT_URL }}
+                  TASTYTRADE_LOGIN: ${{ secrets.TASTYTRADE_CERT_LOGIN }}
+                  TASTYTRADE_PASSWORD: ${{ secrets.TASTYTRADE_CERT_PASSWORD }}

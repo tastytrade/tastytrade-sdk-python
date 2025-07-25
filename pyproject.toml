@@ -15,6 +15,16 @@ packages = [
 documentation = "https://tastytrade.github.io/tastytrade-sdk-python"
 repository = "https://github.com/tastytrade/tastytrade-sdk-python"
 
+[tool.poetry.scripts]
+check = "scripts.build:check"
+lint = "scripts.build:lint"
+test = "scripts.build:test"
+docs = "scripts.build:docs"
+release-patch = "scripts.build:release_patch"
+release-minor = "scripts.build:release_minor"
+release-major = "scripts.build:release_major"
+experiment = "scripts.build:run_experiment"
+
 [tool.poetry.dependencies]
 python = "^3.8"
 injector = "^0.20.1"
