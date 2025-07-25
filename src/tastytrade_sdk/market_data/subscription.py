@@ -142,7 +142,6 @@ class Subscription:
         with self.__condition:
             self.__condition.wait_for(condition, 0.1)
 
-    # pylint: disable=too-many-branches
     def __receive(self) -> None:
         if not self.__websocket:
             return
@@ -150,52 +149,79 @@ class Subscription:
             message = ujson.loads(self.__websocket.recv())
         except ConnectionClosedOK:
             return
-        _type = message['type']
-        cond = self.__condition
-        # TODO: Convert this into some more appropriate structure to avoid branch bloat.
-        if _type == 'ERROR':
-            raise StreamerException(message['error'], message['message'])
-        if _type == 'SETUP':
-            keepalive_interval = floor(message['keepaliveTimeout'] / 2)
-            self.__keepalive_thread = LoopThread(lambda: self.__send('KEEPALIVE'), keepalive_interval)
-        elif _type == 'AUTH_STATE':
-            auth_state = message['state'] == 'AUTHORIZED'
-            with cond:
-                self.__is_authorized = auth_state
-                cond.notify_all()
-            _LOGGER.debug('Got auth state: %s', auth_state)
-        elif _type == 'FEED_CONFIG':
-            with cond:
-                self.__feed_config = message
-                cond.notify_all()
-            _LOGGER.info('Got feed config: %s', message)
-        elif _type == 'CHANNEL_OPENED':
-            with cond:
-                self.__channel_opened = message
-                cond.notify_all()
-            _LOGGER.info('Got channel open: %s', message)
-        elif _type == 'KEEPALIVE':
-            pass
-        elif _type == 'FEED_DATA':
-            data = message['data']
-            event_type = None
-            event_handler: Optional[Callable] = None
-            for event in data:
-                if isinstance(event, str):
-                    event_type = event
-                    event_handler = self.__handler_for(event_type)
-                elif isinstance(event, list):
-                    if event_handler:
-                        full_event = self.__unpack_event(event_type, event)
-                        event_handler(full_event)  # pylint: disable=not-callable
-                elif isinstance(event, dict):
-                    handler = self.__handler_for(event['eventType'])
-                    if handler:
-                        self.__update_event(event)
-                        handler(event)
+
+        message_type = message.get('type')
+        handler = self.__get_message_handler(message_type)
+        if handler:
+            handler(message)
         else:
-            _LOGGER.debug('Unhandled message type: %s', _type)
-    # pyline: enable=too-many-branches
+            _LOGGER.debug('Unhandled message type: %s', message_type)
+
+    def __get_message_handler(self, message_type: str) -> Optional[Callable]:
+        """Return the appropriate handler for the message type"""
+        handlers = {
+            'ERROR': self.__handle_error,
+            'SETUP': self.__handle_setup,
+            'AUTH_STATE': self.__handle_auth_state,
+            'FEED_CONFIG': self.__handle_feed_config,
+            'CHANNEL_OPENED': self.__handle_channel_opened,
+            'KEEPALIVE': self.__handle_keepalive,
+            'FEED_DATA': self.__handle_feed_data
+        }
+        return handlers.get(message_type)
+
+    def __handle_error(self, message: dict) -> None:
+        """Handle ERROR message type"""
+        raise StreamerException(message['error'], message['message'])
+
+    def __handle_setup(self, message: dict) -> None:
+        """Handle SETUP message type"""
+        keepalive_interval = floor(message['keepaliveTimeout'] / 2)
+        self.__keepalive_thread = LoopThread(lambda: self.__send('KEEPALIVE'), keepalive_interval)
+
+    def __handle_auth_state(self, message: dict) -> None:
+        """Handle AUTH_STATE message type"""
+        auth_state = message['state'] == 'AUTHORIZED'
+        with self.__condition:
+            self.__is_authorized = auth_state
+            self.__condition.notify_all()
+        _LOGGER.debug('Got auth state: %s', auth_state)
+
+    def __handle_feed_config(self, message: dict) -> None:
+        """Handle FEED_CONFIG message type"""
+        with self.__condition:
+            self.__feed_config = message
+            self.__condition.notify_all()
+        _LOGGER.info('Got feed config: %s', message)
+
+    def __handle_channel_opened(self, message: dict) -> None:
+        """Handle CHANNEL_OPENED message type"""
+        with self.__condition:
+            self.__channel_opened = message
+            self.__condition.notify_all()
+        _LOGGER.info('Got channel open: %s', message)
+
+    def __handle_keepalive(self, message: dict) -> None:
+        """Handle KEEPALIVE message type"""
+
+    def __handle_feed_data(self, message: dict) -> None:
+        """Handle FEED_DATA message type"""
+        data = message['data']
+        event_type = None
+        event_handler: Optional[Callable] = None
+
+        for event in data:
+            if isinstance(event, str):
+                event_type = event
+                event_handler = self.__handler_for(event_type)
+            elif isinstance(event, list) and event_handler:
+                full_event = self.__unpack_event(event_type, event)
+                event_handler(full_event)  # pylint: disable=not-callable
+            elif isinstance(event, dict):
+                handler = self.__handler_for(event.get('eventType'))
+                if handler:
+                    self.__update_event(event)
+                    handler(event)
 
     def __unpack_event(self, event_type, event) -> Optional[list[str]]:
         if (config := self.__feed_config) and (config_fields := config.get('eventFields')):
