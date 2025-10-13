@@ -1,11 +1,11 @@
 import logging
 import os
-from tests.utils import get_tasty
+from tastytrade_sdk import Tastytrade
 
 
 def main():
     logging.basicConfig(level=os.environ.get('LOGLEVEL', 'INFO').upper())
-    tasty = get_tasty()
+    tasty = Tastytrade.from_env()
     symbols = ['YELP  240517C00042000', 'AAPL']
     subscription = tasty.market_data.subscribe(
         symbols=symbols, on_quote=print, on_candle=print, on_greeks=print,

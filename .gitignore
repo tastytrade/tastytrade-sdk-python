@@ -3,6 +3,7 @@
 .env
 .cache*
 .DS_Store
+.vscode
 dist
 *.egg-info
 docs/_build

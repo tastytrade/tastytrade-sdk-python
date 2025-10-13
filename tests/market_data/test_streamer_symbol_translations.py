@@ -1,14 +1,14 @@
 from unittest import TestCase, skip
 
 from tastytrade_sdk.market_data.streamer_symbol_translation import StreamerSymbolTranslationsFactory
-from tests.utils import get_tasty
+from tastytrade_sdk import Tastytrade
 
 
 class StreamerSymbolTranslationsFactoryTest(TestCase):
 
     @classmethod
     def setUpClass(cls) -> None:
-        cls.__factory = StreamerSymbolTranslationsFactory(get_tasty().api)
+        cls.__factory = StreamerSymbolTranslationsFactory(Tastytrade.from_env().api)
 
     def test_equities(self):
         translations = self.__factory.create(['SPY', 'AAPL', 'FOO'])
