@@ -24,3 +24,6 @@ jobs:
           API_BASE_URL: ${{ vars.TASTYTRADE_CERT_URL }}
           TASTYTRADE_LOGIN: ${{ secrets.TASTYTRADE_CERT_LOGIN }}
           TASTYTRADE_PASSWORD: ${{ secrets.TASTYTRADE_CERT_PASSWORD }}
+          TT_CLIENT_ID: ${{ secrets.TT_CLIENT_ID }}
+          TT_CLIENT_SECRET: ${{ secrets.TT_CLIENT_SECRET }}
+          TT_REFRESH_TOKEN: ${{ secrets.TT_REFRESH_TOKEN }}
