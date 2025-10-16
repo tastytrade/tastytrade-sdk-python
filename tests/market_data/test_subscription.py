@@ -4,7 +4,7 @@ from unittest import TestCase
 from tastytrade_sdk import Subscription
 from tastytrade_sdk.exceptions import InvalidArgument
 from tastytrade_sdk.market_data.streamer_symbol_translation import StreamerSymbolTranslations
-from tests.utils import get_tasty
+from tastytrade_sdk import Tastytrade
 
 TIMEOUT=30
 
@@ -15,7 +15,7 @@ class SubscriptionTest(TestCase):
             Subscription('url', 'token', StreamerSymbolTranslations([]))
 
     def test_subscription(self):
-        tasty = get_tasty()
+        tasty = Tastytrade.from_env()
         symbols = ['AAPL']
         quotes = []
         fields = {'Quote': ['eventSymbol', 'askPrice']}
