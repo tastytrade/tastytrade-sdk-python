@@ -1,3 +1,5 @@
+# This project is archived. Please see our [SDKs page](https://developer.tastytrade.com/sdk/) for other Python SDKs.
+
 [![PyPI](https://img.shields.io/pypi/v/tastytrade-sdk)](https://pypi.org/project/tastytrade-sdk/)
 [![PyPI - Downloads](https://img.shields.io/pypi/dm/tastytrade-sdk)](https://pypi.org/project/tastytrade-sdk/)
 
