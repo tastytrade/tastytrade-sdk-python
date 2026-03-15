@@ -200,9 +200,11 @@ class Subscription:
     def __unpack_event(self, event_type, event) -> Optional[list[str]]:
         if (config := self.__feed_config) and (config_fields := config.get('eventFields')):
             fields = config_fields.get(event_type)
-            if len(event) != len(fields):
-                raise ValueError(f'Event and field length do not match: {len(event)} vs {len(fields)}')
-            full_event = dict(zip(fields, event))
+            num_events = len(event)
+            num_fields = len(fields)
+            if num_events % num_fields != 0:
+                raise ValueError(f'Field is not a multiple of event: {num_events} vs {num_fields}')
+            full_event = dict(zip(fields*(num_events//num_fields), event))
             self.__update_event(full_event)
             return full_event
         return None
